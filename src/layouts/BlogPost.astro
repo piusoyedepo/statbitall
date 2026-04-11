@@ -1,0 +1,215 @@
+---
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+import ModuleBadge from '../components/ModuleBadge.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  module: 'A' | 'B' | 'C' | 'D' | 'E';
+  date: Date;
+  readTime: string;
+}
+
+const { title, description, module, date, readTime } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base title={`${title} — Statbitall`} description={description}>
+  <Nav />
+
+  <article class="post-wrapper">
+    <div class="post-inner">
+      <!-- Meta row -->
+      <div class="post-meta">
+        <ModuleBadge module={module} />
+        <span class="meta-sep">·</span>
+        <time class="meta-text" datetime={date.toISOString()}>{formattedDate}</time>
+        <span class="meta-sep">·</span>
+        <span class="meta-text">{readTime}</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="post-title">{title}</h1>
+
+      <!-- Prose content from MDX -->
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </article>
+
+  <Footer />
+</Base>
+
+<style>
+  .post-wrapper {
+    background-color: var(--color-bg-page);
+    width: 100%;
+    min-height: calc(100vh - 60px);
+  }
+
+  .post-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .post-inner {
+      padding: 3rem 2rem 4rem;
+    }
+  }
+
+  /* Meta row */
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .meta-sep {
+    color: var(--color-text-muted);
+    font-size: 12px;
+  }
+
+  .meta-text {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  /* Post title */
+  .post-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0 0 2.5rem;
+  }
+
+  /* ── Prose styles ── */
+  .prose {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+
+  /* Headings */
+  .prose :global(h2) {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 3rem 0 1rem;
+  }
+
+  .prose :global(h3) {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 2rem 0 0.75rem;
+  }
+
+  /* Paragraphs */
+  .prose :global(p) {
+    margin: 0 0 1.5rem;
+  }
+
+  /* Links */
+  .prose :global(a) {
+    color: #1B9E77;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose :global(a:hover) {
+    color: #0F6E56;
+  }
+
+  /* Inline code */
+  .prose :global(:not(pre) > code) {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: #1B9E77;
+    background-color: var(--color-border-subtle);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Code blocks — override Shiki's inline background */
+  .prose :global(pre) {
+    background-color: #1A1A2E !important;
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 0 0 1.5rem;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #E0E0E0;
+  }
+
+  /* Callout boxes — blockquote as callout */
+  .prose :global(blockquote) {
+    border-left: 3px solid #1B9E77;
+    background-color: var(--color-bg-page);
+    padding: 16px 20px;
+    margin: 0 0 1.5rem;
+    border-radius: 0;
+  }
+
+  .prose :global(blockquote p) {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Lists */
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.5rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  /* KaTeX display equations */
+  .prose :global(.katex-display) {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  .prose :global(.katex) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Strong */
+  .prose :global(strong) {
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+</style>

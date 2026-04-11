@@ -1,11 +1,242 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import BlogCard from '../components/BlogCard.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Real posts from content collection (published only)
+const realPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedReal = realPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Placeholder posts for modules without real content yet
+const placeholders = [
+  {
+    module: 'B' as const,
+    readTime: '6 min read',
+    title: "The t-test: what it's really asking",
+    description:
+      'Most people know to look for p < 0.05. Fewer know what the test statistic is actually measuring or why the t-distribution has fatter tails.',
+    href: '/blog/t-test-explained',
+  },
+  {
+    module: 'C' as const,
+    readTime: '10 min read',
+    title: 'Decision trees learn by asking the right questions',
+    description:
+      'Information gain, Gini impurity, and why a greedy split strategy produces trees that are surprisingly good at finding structure in data.',
+    href: '/blog/decision-trees-explained',
+  },
+];
+
+// Merge: real posts first, then fill with placeholders up to 3
+const realCards = sortedReal.map((p) => ({
+  module: p.data.module,
+  readTime: p.data.readTime,
+  title: p.data.title,
+  description: p.data.description,
+  href: `/blog/${p.id}`,
+}));
+
+const posts = [...realCards, ...placeholders].slice(0, 3);
+
+const modules = ['A', 'B', 'C', 'D', 'E'] as const;
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<Base title="Statbitall — The statistics behind the code.">
+  <Nav />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-heading">The statistics behind the code.</h1>
+      <p class="hero-sub">
+        Understand the why behind every model, test, and algorithm.
+      </p>
+      <a href="/blog" class="cta-btn">Start reading</a>
+    </div>
+  </section>
+
+  <!-- Posts section -->
+  <section class="posts-section">
+    <div class="posts-inner">
+      <h2 class="section-heading">Latest posts</h2>
+
+      <!-- Module filter pills -->
+      <div class="module-filter" role="group" aria-label="Filter by module">
+        <button class="filter-pill filter-pill--all filter-pill--active">All</button>
+        {modules.map((m) => (
+          <button class={`filter-pill filter-pill--${m.toLowerCase()}`}>
+            Module {m}
+          </button>
+        ))}
+      </div>
+
+      <!-- Cards grid -->
+      <div class="cards-grid">
+        {posts.map((post) => (
+          <BlogCard
+            module={post.module}
+            readTime={post.readTime}
+            title={post.title}
+            description={post.description}
+            href={post.href}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <Footer />
+</Base>
+
+<style>
+  /* ── Hero ── */
+  .hero {
+    background-color: #0B1D3A;
+    width: 100%;
+  }
+
+  .hero-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 6rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-inner {
+      padding: 6rem 2rem;
+    }
+  }
+
+  .hero-heading {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .hero-sub {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #7FA8D4;
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 10px 24px;
+    background-color: #1B9E77;
+    color: #ffffff;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 99px;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .cta-btn:hover {
+    background-color: #0F6E56;
+  }
+
+  /* ── Posts section ── */
+  .posts-section {
+    background-color: var(--color-bg-page);
+    width: 100%;
+  }
+
+  .posts-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .posts-inner {
+      padding: 3rem 2rem;
+    }
+  }
+
+  .section-heading {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  /* ── Module filter ── */
+  .module-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-pill {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 99px;
+    border: 1px solid var(--color-border-default);
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .filter-pill:hover {
+    border-color: #2A5BA0;
+    color: #163566;
+  }
+
+  .filter-pill--active {
+    background-color: #0B1D3A;
+    color: #ffffff;
+    border-color: #0B1D3A;
+  }
+
+  /* Module-specific accent colors on hover */
+  .filter-pill--a:hover { border-color: #0B1D3A; color: #0B1D3A; }
+  .filter-pill--b:hover { border-color: #0F6E56; color: #0F6E56; }
+  .filter-pill--c:hover { border-color: #854F0B; color: #854F0B; }
+  .filter-pill--d:hover { border-color: #3C3489; color: #3C3489; }
+  .filter-pill--e:hover { border-color: #993C1D; color: #993C1D; }
+
+  /* ── Cards grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .cards-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
