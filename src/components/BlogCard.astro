@@ -26,6 +26,7 @@ const { module, readTime, title, description, href } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    height: 100%;
     background-color: var(--color-bg-surface);
     border: 0.5px solid var(--color-border-default);
     border-radius: 12px;
@@ -72,5 +73,9 @@ const { module, readTime, title, description, href } = Astro.props;
     line-height: 1.5;
     color: var(--color-text-secondary);
     margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>

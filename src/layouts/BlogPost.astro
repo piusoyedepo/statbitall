@@ -107,11 +107,15 @@ const formattedDate = date.toLocaleDateString('en-US', {
   /* Post title */
   .post-title {
     font-family: 'Source Serif 4', Georgia, serif;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 400;
     line-height: 1.3;
     color: var(--color-text-primary);
     margin: 0 0 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .post-title { font-size: 32px; }
   }
 
   /* ── Prose styles ── */
@@ -174,6 +178,9 @@ const formattedDate = date.toLocaleDateString('en-US', {
     padding: 16px 20px;
     overflow-x: auto;
     margin: 0 0 1.5rem;
+    /* Full-bleed on mobile so long lines don't cause page overflow */
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
   }
 
   .prose :global(pre code) {
@@ -213,11 +220,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
     margin-bottom: 0.4rem;
   }
 
-  /* KaTeX display equations */
+  /* KaTeX display equations — allow horizontal scroll on mobile */
   .prose :global(.katex-display) {
     margin: 1.5rem 0;
     overflow-x: auto;
     text-align: center;
+    -webkit-overflow-scrolling: touch;
   }
 
   .prose :global(.katex) {
@@ -230,4 +238,46 @@ const formattedDate = date.toLocaleDateString('en-US', {
     font-weight: 500;
     color: var(--color-text-primary);
   }
+
+  /* h2 scroll reveal */
+  .prose :global(h2) {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+
+  .prose :global(h2.revealed) {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prose :global(h2) {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 </style>
+
+<script>
+  const headings = document.querySelectorAll('.prose h2');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReduced) {
+    headings.forEach((h) => h.classList.add('revealed'));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '-20px' }
+    );
+    headings.forEach((h) => observer.observe(h));
+  }
+</script>

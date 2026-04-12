@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Footer from '../components/Footer.astro';
+import ScrollReveal from '../components/ScrollReveal.tsx';
+import PageTransition from '../components/PageTransition.tsx';
 import { getCollection } from 'astro:content';
 
 // All published posts, newest first
@@ -23,49 +25,57 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
 <Base title="Statbitall — The statistics behind the code.">
   <Nav />
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-inner">
-      <h1 class="hero-heading">The statistics behind the code.</h1>
-      <p class="hero-sub">
-        Understand the why behind every model, test, and algorithm.
-      </p>
-      <a href="#latest-posts" class="cta-btn">Start reading</a>
-    </div>
-  </section>
-
-  <!-- Posts section -->
-  <section id="latest-posts" class="posts-section">
-    <div class="posts-inner">
-      <h2 class="section-heading">Latest posts</h2>
-
-      <!-- Module filter pills -->
-      <div class="module-filter" role="group" aria-label="Filter by module">
-        <button class="filter-pill filter-pill--all filter-pill--active">All</button>
-        {modules.map((m) => (
-          <button class={`filter-pill filter-pill--${m.toLowerCase()}`}>
-            Module {m}
-          </button>
-        ))}
+  <PageTransition client:load>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-inner">
+        <h1 class="hero-heading">The statistics behind the code.</h1>
+        <p class="hero-sub">
+          Understand the why behind every model, test, and algorithm.
+        </p>
+        <a href="#latest-posts" class="cta-btn">Start reading</a>
       </div>
+    </section>
 
-      <!-- Cards grid -->
-      <div class="cards-grid">
-        {posts.map((post) => (
-          <BlogCard
-            module={post.module}
-            readTime={post.readTime}
-            title={post.title}
-            description={post.description}
-            href={post.href}
-          />
-        ))}
+    <!-- Posts section -->
+    <section id="latest-posts" class="posts-section">
+      <div class="posts-inner">
+        <ScrollReveal client:visible>
+          <h2 class="section-heading">Latest posts</h2>
+        </ScrollReveal>
+
+        <!-- Module filter pills -->
+        <ScrollReveal client:visible delay={0.05}>
+          <div class="module-filter" role="group" aria-label="Filter by module">
+            <button class="filter-pill filter-pill--all filter-pill--active">All</button>
+            {modules.map((m) => (
+              <button class={`filter-pill filter-pill--${m.toLowerCase()}`}>
+                Module {m}
+              </button>
+            ))}
+          </div>
+        </ScrollReveal>
+
+        <!-- Cards grid -->
+        <div class="cards-grid">
+          {posts.map((post, i) => (
+            <ScrollReveal client:visible delay={i * 0.1}>
+              <BlogCard
+                module={post.module}
+                readTime={post.readTime}
+                title={post.title}
+                description={post.description}
+                href={post.href}
+              />
+            </ScrollReveal>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <Footer />
+    <!-- Footer -->
+    <Footer />
+  </PageTransition>
 </Base>
 
 <style>
@@ -78,7 +88,7 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
   .hero-inner {
     max-width: 1080px;
     margin: 0 auto;
-    padding: 6rem 1.25rem;
+    padding: 5rem 1.25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,28 +96,38 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
     gap: 1rem;
   }
 
-  @media (min-width: 768px) {
-    .hero-inner {
-      padding: 6rem 2rem;
-    }
+  @media (min-width: 640px) {
+    .hero-inner { padding: 6rem 1.5rem; }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-inner { padding: 6rem 2rem; }
   }
 
   .hero-heading {
     font-family: 'Source Serif 4', Georgia, serif;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 400;
     line-height: 1.3;
     color: #ffffff;
     margin: 0;
   }
 
+  @media (min-width: 640px) {
+    .hero-heading { font-size: 32px; }
+  }
+
   .hero-sub {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.7;
     color: #7FA8D4;
     margin: 0;
     max-width: 480px;
+  }
+
+  @media (min-width: 640px) {
+    .hero-sub { font-size: 16px; }
   }
 
   .cta-btn {
@@ -124,9 +144,7 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
     transition: background-color 0.15s ease;
   }
 
-  .cta-btn:hover {
-    background-color: #0F6E56;
-  }
+  .cta-btn:hover { background-color: #0F6E56; }
 
   /* ── Posts section ── */
   .posts-section {
@@ -143,10 +161,12 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
     gap: 1.5rem;
   }
 
-  @media (min-width: 768px) {
-    .posts-inner {
-      padding: 3rem 2rem;
-    }
+  @media (min-width: 640px) {
+    .posts-inner { padding: 3rem 1.5rem; }
+  }
+
+  @media (min-width: 1024px) {
+    .posts-inner { padding: 3rem 2rem; }
   }
 
   .section-heading {
@@ -178,18 +198,9 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
     transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
   }
 
-  .filter-pill:hover {
-    border-color: #2A5BA0;
-    color: #163566;
-  }
+  .filter-pill:hover { border-color: #2A5BA0; color: #163566; }
+  .filter-pill--active { background-color: #0B1D3A; color: #ffffff; border-color: #0B1D3A; }
 
-  .filter-pill--active {
-    background-color: #0B1D3A;
-    color: #ffffff;
-    border-color: #0B1D3A;
-  }
-
-  /* Module-specific accent colors on hover */
   .filter-pill--a:hover { border-color: #0B1D3A; color: #0B1D3A; }
   .filter-pill--b:hover { border-color: #0F6E56; color: #0F6E56; }
   .filter-pill--c:hover { border-color: #854F0B; color: #854F0B; }
@@ -204,14 +215,15 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
   }
 
   @media (min-width: 640px) {
-    .cards-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (min-width: 1024px) {
-    .cards-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    .cards-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Any wrapper div (ScrollReveal motion.div) must stretch to fill the grid cell */
+  .cards-grid > :global(*) {
+    height: 100%;
   }
 </style>
