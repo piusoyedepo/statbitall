@@ -228,8 +228,9 @@ const formattedDate = date.toLocaleDateString('en-US', {
     -webkit-overflow-scrolling: touch;
   }
 
-  .prose :global(.katex) {
-    font-size: 1rem;
+  /* Inline math: match surrounding body text */
+  .prose :global(:not(.katex-display) > .katex) {
+    font-size: 1em;
     line-height: 1.5;
   }
 

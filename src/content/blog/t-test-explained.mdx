@@ -7,6 +7,101 @@ readTime: '6 min read'
 draft: false
 ---
 
-The t-test is the most widely used statistical test in science, medicine, and industry — and one of the most widely misunderstood. Understanding what the test statistic actually measures, why Student used a t-distribution instead of a normal, and what a p-value really says will change how you read every analysis that uses one.
+## The underlying idea
 
-This post is a stub. Full content coming soon.
+You have two groups. Maybe it's customers who saw a new landing page versus those who saw the old one. Maybe it's patients who received a drug versus a placebo. You measured something for each group, and the averages are different. The question is simple: is that difference real, or did you just get unlucky with who ended up in which group?
+
+The t-test compares the means of two groups and asks whether the gap between them is large enough, relative to how noisy the data is, that random chance alone is an unlikely explanation.
+
+That word "relative" matters. A difference of 5 milliseconds in page load time might be massive if your measurements barely vary, and meaningless if they swing wildly from user to user. The t-test captures this by comparing the signal (the difference in means) against the noise (the variability within each group). When the signal-to-noise ratio crosses a threshold, you reject the idea that nothing happened.
+
+## Historical root
+
+William Sealy Gosset developed the t-test in 1908 while working as a chemist at the Guinness brewery in Dublin. His problem was practical: he needed to compare small batches of barley to determine which varieties produced better beer. With sample sizes sometimes as small as three or four, the normal distribution was too optimistic about how precisely he knew his sample means.
+
+Gosset published under the pseudonym "Student" because Guinness barred employees from publishing under their real names. The company worried competitors would learn it was using statistics to gain an edge. The paper, "The Probable Error of a Mean," introduced what we now call the t-distribution.
+
+Gosset's real insight was recognizing that when you estimate variability from a small sample, your estimate of variability is itself uncertain. The t-distribution accounts for this extra uncertainty with fatter tails than the normal. With large samples, the two distributions converge. With small samples, the difference matters.
+
+Ronald Fisher later formalized and extended this work into the broader hypothesis testing framework that dominates applied statistics today.
+
+## Key assumptions
+
+The t-test relies on four assumptions. Violating them doesn't always break the test, but knowing which violations matter separates a reliable result from a misleading one.
+
+**Independence of observations.** Each data point must be unrelated to every other. If you measure the same customer twice, or if users within a household influence each other's behavior, this assumption fails. Violation typically inflates the false positive rate. Paired t-tests handle one specific type of dependence (repeated measures on the same subjects), but not all forms.
+
+**Continuous outcome variable.** The t-test works on continuous measurements (revenue, time, weight), not counts or categories. For binary outcomes (clicked/didn't click), you need a different test.
+
+**Normality of the sampling distribution.** The means of each group should be approximately normally distributed. Thanks to the central limit theorem, this is usually fine with sample sizes above 30 or so, regardless of the underlying data shape. With very small samples from heavily skewed populations, consider the Mann-Whitney U test instead.
+
+**Equal variances (for the standard two-sample t-test).** The classic version assumes both groups have similar spread. If one group's measurements vary twice as much as the other's, the pooled variance estimate is wrong. Welch's t-test drops this assumption and should be your default. There's rarely a good reason to use the equal-variance version.
+
+## The math
+
+The core of the t-test is a ratio. The numerator measures the signal. The denominator measures the noise. The result tells you how many "units of noise" your signal is worth.
+
+For the **two-sample t-test** (comparing group A to group B):
+
+$$
+t = \frac{\bar{X}_A - \bar{X}_B}{s_p \sqrt{\frac{1}{n_A} + \frac{1}{n_B}}}
+$$
+
+where $\bar{X}_A$ and $\bar{X}_B$ are the sample means, $n_A$ and $n_B$ are the sample sizes, and $s_p$ is the **pooled standard deviation**:
+
+$$
+s_p = \sqrt{\frac{(n_A - 1)s_A^2 + (n_B - 1)s_B^2}{n_A + n_B - 2}}
+$$
+
+The pooled standard deviation is a weighted average of the two groups' variability. It assumes both groups have the same true variance. The degrees of freedom are $n_A + n_B - 2$.
+
+For **Welch's t-test** (the version you should actually use), the formula changes:
+
+$$
+t = \frac{\bar{X}_A - \bar{X}_B}{\sqrt{\frac{s_A^2}{n_A} + \frac{s_B^2}{n_B}}}
+$$
+
+The denominator now uses each group's own variance estimate separately. The degrees of freedom become a messy fraction (the Welch-Satterthwaite equation), but software handles that.
+
+Once you have the t-statistic, you compare it against the t-distribution with the appropriate degrees of freedom. The p-value is the probability of seeing a t-statistic at least as extreme as yours if the null hypothesis (no real difference) were true.
+
+## The code
+
+Here's a direct comparison showing both versions and why Welch's is the safer default:
+
+```python
+import numpy as np
+from scipy import stats
+
+rng = np.random.default_rng(42)
+
+# Simulate an A/B test: control vs. treatment
+# Treatment has higher mean AND higher variance
+control = rng.normal(loc=10.0, scale=2.0, size=50)
+treatment = rng.normal(loc=11.2, scale=4.0, size=50)
+
+# Standard t-test (assumes equal variance)
+t_equal, p_equal = stats.ttest_ind(control, treatment, equal_var=True)
+print(f"Equal-variance t-test:  t = {t_equal:.3f}, p = {p_equal:.4f}")
+
+# Welch's t-test (does NOT assume equal variance)
+t_welch, p_welch = stats.ttest_ind(control, treatment, equal_var=False)
+print(f"Welch's t-test:         t = {t_welch:.3f}, p = {p_welch:.4f}")
+
+# Check the variance ratio
+print(f"\nVariance ratio: {treatment.var() / control.var():.2f}")
+print(f"Control std:    {control.std():.2f}")
+print(f"Treatment std:  {treatment.std():.2f}")
+```
+
+When the variances are similar, both versions give nearly identical results. When they differ (as above, where treatment variance is 4x the control), the equal-variance version can mislead you. Welch's adjusts the degrees of freedom downward, making the test appropriately more conservative. SciPy defaults to `equal_var=True` for historical reasons, so you need to explicitly set `equal_var=False`.
+
+## Business application
+
+**A/B testing in product teams.** The t-test is the backbone of most A/B test analyses. You're comparing a metric (conversion rate, revenue per user, session duration) between control and treatment. Use Welch's version, confirm that observations are independent (no user appears in both groups), and set your sample size before running the test, not after peeking at results.
+
+**Clinical trials.** The two-sample t-test compares outcomes between drug and placebo groups. The paired t-test shows up in crossover designs where the same patient receives both treatments at different times. Small sample sizes make the t-distribution's fatter tails particularly important here.
+
+**When NOT to use it.** Don't use a t-test to compare more than two groups. Three variants in an A/B/C test means three pairwise comparisons, and your cumulative false positive rate jumps from 5% to roughly 14%. Use ANOVA instead, followed by post-hoc comparisons. Don't use it on heavily skewed data with tiny samples. Don't use it when observations aren't independent, like users on shared devices, students graded by the same teacher, or sequential time series points.
+
+The most common misuse in practice: running the test repeatedly as data trickles in and stopping the moment p < 0.05. This is peeking, and it dramatically inflates your false positive rate. If you need to monitor results in real time, use sequential testing methods designed for that purpose.

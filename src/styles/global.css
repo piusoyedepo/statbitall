@@ -86,6 +86,11 @@ code, pre {
   font-family: var(--font-mono);
 }
 
+/* KaTeX display equations — consistent size across all posts */
+.katex-display > .katex {
+  font-size: 1.2em;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
