@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="About — Statbitall"
+  description="Statbitall bridges statistical theory, code implementation, and real-world decision-making."
+>
+  <Nav />
+
+  <main class="about-wrapper">
+    <div class="about-inner">
+      <h1 class="about-heading">About Statbitall</h1>
+
+      <div class="about-body">
+        <p>
+          Most statistics education splits into two unsatisfying camps: textbooks that
+          prove theorems but never touch data, and tutorials that show you how to call
+          <code>sklearn.fit()</code> without explaining what it's actually doing. Statbitall
+          sits in the gap. Every post starts with the underlying idea, traces it to its
+          mathematical foundation, implements it in code, and ends with a concrete example
+          of where it matters in practice.
+        </p>
+
+        <p>
+          The goal is not to make statistics easier by removing the hard parts. It's to
+          make the hard parts feel inevitable — to show that the formulas aren't arbitrary,
+          that the assumptions aren't bureaucratic, and that the code is just the math
+          written in a different notation. If you leave a post understanding <em>why</em> a
+          method works rather than just <em>how</em> to use it, that's a success.
+        </p>
+
+        <p>
+          The content is organized into five modules, each covering a distinct area of
+          applied statistics and machine learning:
+        </p>
+
+        <ul class="module-list">
+          <li>
+            <strong>Module A — Foundations.</strong> Probability, distributions, the central
+            limit theorem, Bayes' theorem. The scaffolding everything else hangs on.
+          </li>
+          <li>
+            <strong>Module B — Inference.</strong> Hypothesis testing, t-tests, ANOVA,
+            confidence intervals. How to draw conclusions from data without fooling yourself.
+          </li>
+          <li>
+            <strong>Module C — Supervised learning.</strong> Regression, classification,
+            decision trees, ensembles. The core toolkit of predictive modeling.
+          </li>
+          <li>
+            <strong>Module D — Unsupervised learning.</strong> Clustering, dimensionality
+            reduction, density estimation. Finding structure without labels.
+          </li>
+          <li>
+            <strong>Module E — Causal inference.</strong> Experiments, observational studies,
+            difference-in-differences, instrumental variables. Moving from correlation to cause.
+          </li>
+        </ul>
+
+        <p>
+          Statbitall is written and maintained by a single person who has spent years doing
+          data work in industry and keeps finding that the clearest path to better decisions
+          is understanding the statistics behind the tools — not just running them.
+          More posts are added as they're finished.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .about-wrapper {
+    background-color: var(--color-bg-page);
+    width: 100%;
+    min-height: calc(100vh - 60px);
+  }
+
+  .about-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .about-inner {
+      padding: 3rem 2rem 4rem;
+    }
+  }
+
+  .about-heading {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0 0 2rem;
+  }
+
+  .about-body {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+
+  .about-body p {
+    margin: 0 0 1.5rem;
+  }
+
+  .about-body em {
+    font-style: italic;
+  }
+
+  .about-body code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: #1B9E77;
+    background-color: var(--color-border-subtle);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .module-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .module-list li {
+    font-size: 15px;
+    line-height: 1.6;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-border-default);
+    color: var(--color-text-primary);
+  }
+
+  .module-list strong {
+    font-weight: 500;
+  }
+</style>

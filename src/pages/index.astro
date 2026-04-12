@@ -5,42 +5,17 @@ import BlogCard from '../components/BlogCard.astro';
 import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
-// Real posts from content collection (published only)
-const realPosts = await getCollection('blog', ({ data }) => !data.draft);
-const sortedReal = realPosts.sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+// All published posts, newest first
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-// Placeholder posts for modules without real content yet
-const placeholders = [
-  {
-    module: 'B' as const,
-    readTime: '6 min read',
-    title: "The t-test: what it's really asking",
-    description:
-      'Most people know to look for p < 0.05. Fewer know what the test statistic is actually measuring or why the t-distribution has fatter tails.',
-    href: '/blog/t-test-explained',
-  },
-  {
-    module: 'C' as const,
-    readTime: '10 min read',
-    title: 'Decision trees learn by asking the right questions',
-    description:
-      'Information gain, Gini impurity, and why a greedy split strategy produces trees that are surprisingly good at finding structure in data.',
-    href: '/blog/decision-trees-explained',
-  },
-];
-
-// Merge: real posts first, then fill with placeholders up to 3
-const realCards = sortedReal.map((p) => ({
+const posts = allPosts.slice(0, 3).map((p) => ({
   module: p.data.module,
   readTime: p.data.readTime,
   title: p.data.title,
   description: p.data.description,
   href: `/blog/${p.id}`,
 }));
-
-const posts = [...realCards, ...placeholders].slice(0, 3);
 
 const modules = ['A', 'B', 'C', 'D', 'E'] as const;
 ---
@@ -55,12 +30,12 @@ const modules = ['A', 'B', 'C', 'D', 'E'] as const;
       <p class="hero-sub">
         Understand the why behind every model, test, and algorithm.
       </p>
-      <a href="/blog" class="cta-btn">Start reading</a>
+      <a href="#latest-posts" class="cta-btn">Start reading</a>
     </div>
   </section>
 
   <!-- Posts section -->
-  <section class="posts-section">
+  <section id="latest-posts" class="posts-section">
     <div class="posts-inner">
       <h2 class="section-heading">Latest posts</h2>
 
