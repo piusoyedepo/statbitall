@@ -7,6 +7,14 @@
     <span class="logo">Statbitall</span>
     <span class="tagline">The statistics behind the code.</span>
     <span class="copy">&copy; 2025 Statbitall</span>
+    <a href="/rss.xml" class="rss-link" aria-label="RSS feed">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <circle cx="5" cy="19" r="2"/>
+        <path d="M4 4a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4z"/>
+        <path d="M4 11a9 9 0 0 1 9 9H10a6 6 0 0 0-6-6v-3z"/>
+      </svg>
+      RSS
+    </a>
   </div>
 </footer>
 
@@ -46,5 +54,22 @@
     color: #7FA8D4;
     margin-top: 4px;
     opacity: 0.7;
+  }
+
+  .rss-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 12px;
+    color: #7FA8D4;
+    text-decoration: none;
+    margin-top: 6px;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+  }
+
+  .rss-link:hover {
+    opacity: 1;
   }
 </style>
