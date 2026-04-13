@@ -1,19 +1,30 @@
 ---
-// Nav.astro — sticky site navigation with mobile hamburger
+// Nav.astro - sticky site navigation with mobile hamburger
 ---
 
 <nav style="background-color: #0B1D3A;" class="sticky top-0 z-50 w-full">
   <div class="nav-inner">
-    <!-- Left: wordmark + tagline -->
+    <!-- Left: logo mark + wordmark + tagline -->
     <div class="nav-brand">
-      <a href="/" class="nav-logo">Statbitall</a>
-      <span class="nav-tagline">The statistics behind the code.</span>
+      <a href="/" class="nav-logo-wrap" aria-label="Statbitall home">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true" class="nav-logomark">
+          <rect x="1"  y="16" width="5" height="11" rx="1.5" fill="#3B82F6" opacity="0.55"/>
+          <rect x="8"  y="10" width="5" height="17" rx="1.5" fill="#2A5BA0" opacity="0.75"/>
+          <rect x="15" y="5"  width="5" height="22" rx="1.5" fill="#1B9E77"/>
+          <rect x="22" y="12" width="5" height="15" rx="1.5" fill="#5DCAA5" opacity="0.8"/>
+        </svg>
+        <div class="nav-wordmark">
+          <span class="nav-logo">Statbitall</span>
+          <span class="nav-tagline">The statistics behind the code.</span>
+        </div>
+      </a>
     </div>
 
     <!-- Right: desktop links + dark toggle -->
     <div class="nav-right">
-      <a href="/#latest-posts" class="nav-link">Modules</a>
+      <a href="/#latest-posts" class="nav-link">Blog</a>
       <a href="/about" class="nav-link">About</a>
+      <a href="/#newsletter" class="nav-cta">Newsletter</a>
       <button
         id="dark-toggle"
         onclick="window.toggleDark()"
@@ -81,8 +92,9 @@
 
   <!-- Mobile dropdown menu -->
   <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
-    <a href="/#latest-posts" class="mobile-link" onclick="closeMobileMenu()">Modules</a>
+    <a href="/#latest-posts" class="mobile-link" onclick="closeMobileMenu()">Blog</a>
     <a href="/about" class="mobile-link" onclick="closeMobileMenu()">About</a>
+    <a href="/#newsletter" class="mobile-link mobile-link--cta" onclick="closeMobileMenu()">Newsletter</a>
   </div>
 </nav>
 
@@ -105,6 +117,22 @@
   /* ── Brand ── */
   .nav-brand {
     display: flex;
+    align-items: center;
+  }
+
+  .nav-logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logomark {
+    flex-shrink: 0;
+  }
+
+  .nav-wordmark {
+    display: flex;
     flex-direction: column;
     gap: 2px;
   }
@@ -114,7 +142,6 @@
     font-size: 18px;
     font-weight: 400;
     color: #ffffff;
-    text-decoration: none;
     line-height: 1;
   }
 
@@ -145,6 +172,20 @@
   }
 
   .nav-link:hover { color: #ffffff; }
+
+  .nav-cta {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #1B9E77;
+    text-decoration: none;
+    padding: 6px 16px;
+    border-radius: 99px;
+    transition: background-color 0.15s ease;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background-color: #0F6E56; }
 
   /* ── Icon button (dark toggle / hamburger) ── */
   .nav-icon-btn {
@@ -217,6 +258,12 @@
 
   .mobile-link:last-child { border-bottom: none; }
   .mobile-link:hover { color: #ffffff; }
+
+  .mobile-link--cta {
+    color: #5DCAA5;
+    font-weight: 600;
+  }
+  .mobile-link--cta:hover { color: #1B9E77; }
 </style>
 
 <script>

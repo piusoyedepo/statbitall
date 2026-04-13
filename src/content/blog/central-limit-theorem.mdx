@@ -1,6 +1,6 @@
 ---
 title: 'The central limit theorem is why statistics works'
-description: 'The CLT is the reason we can use normal distributions for nearly everything — even when the underlying data looks nothing like a bell curve.'
+description: 'The CLT is the reason we can use normal distributions for nearly everything, even when the underlying data looks nothing like a bell curve.'
 module: A
 date: 2025-04-01
 readTime: '7 min read'
@@ -9,23 +9,23 @@ draft: false
 
 ## The underlying idea
 
-The central limit theorem (CLT) is the single most important result in statistics. It explains why the normal distribution appears everywhere — not because nature loves bell curves, but because of what happens when you average things together.
+The central limit theorem (CLT) is the single most important result in statistics. It explains why the normal distribution appears everywhere, not because nature loves bell curves, but because of what happens when you average things together.
 
-Take any population with any shape of distribution. It can be right-skewed, bimodal, uniform — it doesn't matter. Draw many random samples and compute the mean of each one. The distribution of those sample means will approach a normal distribution. The larger each sample, the tighter the approximation.
+Take any population with any shape of distribution. It can be right-skewed, bimodal, uniform. It doesn't matter. Draw many random samples and compute the mean of each one. The distribution of those sample means will approach a normal distribution. The larger each sample, the tighter the approximation.
 
 This is why we can run hypothesis tests on real-world data without knowing the true distribution of the thing we're measuring. As long as we're working with means of reasonably-sized samples, the CLT guarantees the sampling distribution behaves normally.
 
 ## Historical root
 
-The CLT has a long lineage. Abraham de Moivre first described a version of it in 1733, showing that the binomial distribution approaches the normal for large $n$. Laplace generalized it in 1812. The modern formulation — proved rigorously for independent and identically distributed variables — is credited to Lyapunov (1901) and later Lindeberg (1922).
+The CLT has a long lineage. Abraham de Moivre first described a version of it in 1733, showing that the binomial distribution approaches the normal for large $n$. Laplace generalized it in 1812. The modern formulation, proved rigorously for independent and identically distributed variables, is credited to Lyapunov (1901) and later Lindeberg (1922).
 
-The name "central" doesn't mean it's the most central theorem in statistics (though it arguably is). It refers to the theorem's concern with the center — the mean — of a distribution, and to the central role it plays in connecting probability to inference.
+The name "central" doesn't mean it's the most central theorem in statistics (though it arguably is). It refers to the theorem's concern with the center (the mean) of a distribution, and to the central role it plays in connecting probability to inference.
 
 ## Key assumptions
 
 > **Independence.** Each observation must be drawn independently. Non-random sampling, clustering, or autocorrelation in time-series data violates this. The CLT does not automatically apply to your weekly sales figures.
 
-> **Finite variance.** The population must have a finite mean and variance. Distributions with very heavy tails — like the Cauchy — have infinite variance, and the CLT breaks down entirely for them.
+> **Finite variance.** The population must have a finite mean and variance. Distributions with very heavy tails (like the Cauchy) have infinite variance, and the CLT breaks down entirely for them.
 
 > **Sample size.** The common rule of thumb is $n \geq 30$, but this is context-dependent. If the underlying distribution is already close to normal, $n = 10$ may suffice. If it's severely skewed, $n = 100$ or more may be needed before the approximation is reliable.
 
@@ -49,11 +49,11 @@ $$
 \bar{X}_n \;\sim\; \mathcal{N}\!\left(\mu,\; \frac{\sigma^2}{n}\right)
 $$
 
-The term $\sigma / \sqrt{n}$ is the **standard error** — the standard deviation of the sampling distribution. Quadrupling your sample size halves the standard error, which is why larger studies produce narrower confidence intervals.
+The term $\sigma / \sqrt{n}$ is the **standard error**, the standard deviation of the sampling distribution. Quadrupling your sample size halves the standard error, which is why larger studies produce narrower confidence intervals.
 
 ## The code
 
-Here's a direct demonstration. We'll draw from an exponential distribution — skewed right, nothing like a bell curve — compute sample means repeatedly, and watch the CLT force them into normality.
+Here's a direct demonstration. We'll draw from an exponential distribution (skewed right, nothing like a bell curve), compute sample means repeatedly, and watch the CLT force them into normality.
 
 ```python
 import numpy as np
@@ -86,10 +86,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-Run this and watch the distributions transform: $n = 5$ is visibly skewed, $n = 30$ looks nearly normal, and $n = 100$ is indistinguishable from a bell curve. The population never changed — only the aggregation did.
+Run this and watch the distributions transform: $n = 5$ is visibly skewed, $n = 30$ looks nearly normal, and $n = 100$ is indistinguishable from a bell curve. The population never changed. Only the aggregation did.
 
 ## Business application
 
-The CLT underlies virtually every A/B test run in industry. When a product team runs an experiment — measuring average session length, conversion rate, or revenue per user — they are comparing two sample means. The validity of the t-test or z-test they use rests entirely on the CLT making those means approximately normally distributed.
+The CLT underlies virtually every A/B test run in industry. When a product team runs an experiment (measuring average session length, conversion rate, or revenue per user), they are comparing two sample means. The validity of the t-test or z-test they use rests entirely on the CLT making those means approximately normally distributed.
 
 When CLT assumptions break down, standard tests mislead. Correlated users (network effects in social products), heavy-tailed metrics (revenue with large outliers), or tiny sample sizes all violate the guarantees. This is why platforms like Netflix and LinkedIn publish research on variance reduction techniques: they are engineering around CLT edge cases at scale, where a broken assumption in a significance test translates directly into a bad product decision shipped to millions of users.
