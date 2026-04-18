@@ -10,13 +10,37 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const posts = allPosts.map((p) => ({
+const posts = allPosts.slice(0, 6).map((p) => ({
   module: p.data.module,
   readTime: p.data.readTime,
   title: p.data.title,
   description: p.data.description,
   href: `/blog/${p.id}`,
 }));
+
+const learningPaths = [
+  {
+    n: '01',
+    heading: 'Building the foundation',
+    desc: 'New to statistics or need a refresher? Start with probability, distributions, and the Central Limit Theorem. These concepts power everything else on this site.',
+    href: '/blog/central-limit-theorem',
+    linkText: 'Start with the basics',
+  },
+  {
+    n: '02',
+    heading: 'Testing and inference',
+    desc: 'Comfortable with the fundamentals? Learn how to design experiments, run hypothesis tests, and avoid the most common pitfalls in A/B testing and p-value interpretation.',
+    href: '/blog/t-test-explained',
+    linkText: 'Explore statistical tests',
+  },
+  {
+    n: '03',
+    heading: 'ML, explained statistically',
+    desc: 'Ready to see how machine learning models actually work? We break down regression, classification, clustering, and dimensionality reduction through a statistical lens.',
+    href: '/blog/decision-trees-explained',
+    linkText: 'Dive into ML models',
+  },
+] as const;
 
 const moduleFilters = [
   { key: 'all',  label: 'All'                },
@@ -166,7 +190,34 @@ const structureSteps = [
       </div>
     </section>
 
-    <!-- ── 4. LATEST POSTS ── -->
+    <!-- ── 4. WHERE SHOULD YOU START? ── -->
+    <section class="paths-section">
+      <div class="section-inner">
+        <ScrollReveal client:visible>
+          <p class="section-label">Learning Paths</p>
+          <h2 class="section-heading">Where should you start?</h2>
+          <p class="section-sub">Pick the path that matches where you are right now.</p>
+        </ScrollReveal>
+
+        <div class="paths-grid">
+          {learningPaths.map((path, i) => (
+            <ScrollReveal client:visible delay={i * 0.1}>
+              <div class="path-card">
+                <span class="path-num">{path.n}</span>
+                <h3 class="path-heading">{path.heading}</h3>
+                <p class="path-desc">{path.desc}</p>
+                <a href={path.href} class="path-link">
+                  {path.linkText}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5. LATEST POSTS ── -->
     <section id="latest-posts" class="posts-section">
       <div class="section-inner">
         <h2 class="section-heading">Latest posts</h2>
@@ -191,6 +242,10 @@ const structureSteps = [
               />
             </div>
           ))}
+        </div>
+
+        <div class="view-all">
+          <a href="/blog" class="view-all-btn">View all posts</a>
         </div>
       </div>
     </section>
@@ -506,6 +561,85 @@ const structureSteps = [
     color: var(--color-text-secondary);
   }
 
+  /* ─── Learning paths ───────────────────────── */
+  .paths-section {
+    background-color: var(--color-bg-surface);
+    border-top: 0.5px solid var(--color-border-default);
+    border-bottom: 0.5px solid var(--color-border-default);
+    width: 100%;
+  }
+
+  .paths-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 768px) {
+    .paths-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .paths-grid > :global(*) { height: 100%; }
+
+  .path-card {
+    height: 100%;
+    background-color: var(--color-bg-surface);
+    border: 0.5px solid var(--color-border-default);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .path-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+  }
+
+  .path-num {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: #1B9E77;
+    background-color: #E1F5EE;
+    padding: 3px 10px;
+    border-radius: 99px;
+    display: inline-block;
+    align-self: flex-start;
+  }
+
+  .path-heading {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .path-desc {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+    flex: 1;
+  }
+
+  .path-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1B9E77;
+    text-decoration: none;
+    transition: color 0.15s ease;
+    margin-top: auto;
+  }
+  .path-link:hover { color: #0F6E56; }
+
   /* ─── Latest posts ──────────────────────────── */
   .posts-section {
     background-color: var(--color-bg-page);
@@ -544,6 +678,25 @@ const structureSteps = [
   @media (min-width: 1024px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
 
   .cards-grid > :global(*) { height: 100%; }
+
+  .view-all {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  .view-all-btn {
+    display: inline-block;
+    padding: 11px 28px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 99px;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .view-all-btn:hover { border-color: #1B9E77; color: #1B9E77; }
 
   /* ─── Newsletter ────────────────────────────── */
   .newsletter-section {

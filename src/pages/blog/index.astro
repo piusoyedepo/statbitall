@@ -1,0 +1,139 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const posts = allPosts.map((p) => ({
+  module: p.data.module,
+  readTime: p.data.readTime,
+  title: p.data.title,
+  description: p.data.description,
+  href: `/blog/${p.id}`,
+}));
+
+const moduleFilters = [
+  { key: 'all',  label: 'All'                },
+  { key: 'A',    label: 'Foundations'         },
+  { key: 'B',    label: 'Statistical Tests'   },
+  { key: 'C',    label: 'ML Models'           },
+  { key: 'D',    label: 'Business Analytics'  },
+  { key: 'E',    label: 'AI & Deep Learning'  },
+] as const;
+---
+
+<Base
+  title="All posts | Statbitall"
+  description="Every post on Statbitall — statistics, machine learning, and causal inference explained with code and math."
+>
+  <Nav />
+
+  <main class="main">
+    <div class="inner">
+      <h1 class="heading">All posts</h1>
+
+      <div class="module-filter" role="group" aria-label="Filter by module">
+        {moduleFilters.map(({ key, label }) => (
+          <button class={`filter-pill${key === 'all' ? ' filter-pill--active' : ''}`} data-module={key}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div class="cards-grid" id="cards-grid">
+        {posts.map((post) => (
+          <div data-module={post.module}>
+            <BlogCard
+              module={post.module}
+              readTime={post.readTime}
+              title={post.title}
+              description={post.description}
+              href={post.href}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+  const cards = document.querySelectorAll<HTMLElement>('#cards-grid [data-module]');
+
+  pills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      pills.forEach((p) => p.classList.remove('filter-pill--active'));
+      pill.classList.add('filter-pill--active');
+
+      const selected = pill.dataset.module;
+      cards.forEach((card) => {
+        card.style.display =
+          selected === 'all' || card.dataset.module === selected ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<style>
+  .main {
+    background-color: var(--color-bg-page);
+    min-height: 60vh;
+    width: 100%;
+  }
+
+  .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 4rem 1.25rem;
+  }
+  @media (min-width: 640px)  { .inner { padding: 4rem 1.5rem; } }
+  @media (min-width: 1024px) { .inner { padding: 4.5rem 2rem; } }
+
+  .heading {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--color-text-primary);
+    margin: 0 0 2rem;
+  }
+
+  .module-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-pill {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 99px;
+    border: 1px solid var(--color-border-default);
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+  .filter-pill:hover { border-color: #2A5BA0; color: #163566; }
+  .filter-pill--active { background-color: #0B1D3A; color: #ffffff; border-color: #0B1D3A; }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 640px)  { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .cards-grid > :global(*) { height: 100%; }
+</style>
