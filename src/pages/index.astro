@@ -158,10 +158,7 @@ const structureSteps = [
             {structureSteps.map((step) => (
               <li class="structure-item">
                 <span class="step-num">{step.n}</span>
-                <span class="step-text">
-                  <strong>{step.title}</strong>
-                  <span class="step-desc">. {step.desc}</span>
-                </span>
+                <span class="step-text"><strong>{step.title}</strong><span class="step-desc">. {step.desc}</span></span>
               </li>
             ))}
           </ol>
@@ -181,8 +178,6 @@ const structureSteps = [
             </button>
           ))}
         </div>
-
-        <p class="debug-count">Posts loaded: {posts.length}</p>
 
         <div class="cards-grid">
           {posts.map((post) => (
@@ -492,13 +487,6 @@ const structureSteps = [
   }
 
   /* ─── Latest posts ──────────────────────────── */
-  .debug-count {
-    font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 12px;
-    color: #1B9E77;
-    margin: 0.5rem 0 0;
-  }
-
   .posts-section {
     background-color: var(--color-bg-page);
     width: 100%;
