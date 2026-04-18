@@ -18,7 +18,8 @@ Nothing else on the site makes sense without these. A reader who finishes Phase 
 
 | Post | ID | Title | Module | Status | Prerequisites | Notes |
 |------|----|-------|--------|--------|---------------|-------|
-| 1 | A1 | The central limit theorem is why statistics works | Foundations | ✅ | None | Gateway post. Establishes the Statbitall voice. |
+| 1 | A0 | Probability is not about luck. It's about measuring what you don't know. | Foundations | ✅ | None | Gateway post. Establishes the Statbitall voice. |
+| 1 | A1 | The central limit theorem is why statistics works | Foundations | ✅ | AO | Gateway post. Establishes the Statbitall voice. |
 | 2 | A2 | Probability distributions are just rules for uncertainty | Foundations | ✅ | None | Normal, exponential, uniform, Poisson, binomial. What each looks like, when data follows it, how to identify which one you're dealing with. |
 | 3 | A3 | Your sample is lying to you (and how to catch it) | Foundations | ⬜ | A1, A2 | Random sampling, sampling bias, stratified vs cluster. Connects back to why CLT matters. |
 | 4 | A4 | Variance is risk. Standard deviation is the language of risk. | Foundations | ⬜ | A1, A2 | What each measures, how they differ, when to use which. Standard error callback to CLT ties the series together. |
