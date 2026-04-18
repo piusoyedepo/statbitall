@@ -19,7 +19,7 @@ Nothing else on the site makes sense without these. A reader who finishes Phase 
 | Post | ID | Title | Module | Status | Prerequisites | Notes |
 |------|----|-------|--------|--------|---------------|-------|
 | 1 | A1 | The central limit theorem is why statistics works | Foundations | ✅ | None | Gateway post. Establishes the Statbitall voice. |
-| 2 | A2 | Probability distributions are just rules for uncertainty | Foundations | ⬜ | None | Normal, exponential, uniform, Poisson, binomial. What each looks like, when data follows it, how to identify which one you're dealing with. |
+| 2 | A2 | Probability distributions are just rules for uncertainty | Foundations | ✅ | None | Normal, exponential, uniform, Poisson, binomial. What each looks like, when data follows it, how to identify which one you're dealing with. |
 | 3 | A3 | Your sample is lying to you (and how to catch it) | Foundations | ⬜ | A1, A2 | Random sampling, sampling bias, stratified vs cluster. Connects back to why CLT matters. |
 | 4 | A4 | Variance is risk. Standard deviation is the language of risk. | Foundations | ⬜ | A1, A2 | What each measures, how they differ, when to use which. Standard error callback to CLT ties the series together. |
 | 5 | A12 | Conditional probability is the reason most intuitions fail | Foundations | ⬜ | A2 | Base rate fallacy, medical testing, prosecutor's fallacy. Sets up Bayes. |
@@ -106,7 +106,7 @@ Same posts as above, but grouped by module for how they appear on the site.
 | # | Title | Phase | Status |
 |---|-------|-------|--------|
 | A1 | The central limit theorem is why statistics works | 1 | ✅ |
-| A2 | Probability distributions are just rules for uncertainty | 1 | ⬜ |
+| A2 | Probability distributions are just rules for uncertainty | 1 | ✅ |
 | A3 | Your sample is lying to you (and how to catch it) | 1 | ⬜ |
 | A4 | Variance is risk. Standard deviation is the language of risk. | 1 | ⬜ |
 | A5 | Confidence intervals don't mean what you think they mean | 1 | ⬜ |
