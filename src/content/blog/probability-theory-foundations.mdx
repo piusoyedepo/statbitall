@@ -1,0 +1,181 @@
+---
+title: "Probability is not about luck. It's about measuring what you don't know."
+description: "Random variables, conditional probability, expectation, and the three axioms that make all of statistics possible. The true starting point."
+module: A
+date: 2025-03-25
+readTime: '10 min read'
+draft: false
+---
+
+## The underlying idea
+
+You flip a coin. Before it lands, you don't know whether it will be heads or tails. But you do know something: if the coin is fair, both outcomes are equally likely. That single piece of knowledge, that you can put a number on uncertainty before seeing the outcome, is the entire foundation of probability theory.
+
+This matters because almost nothing in the real world is certain. Will a customer click the ad? Will the patient respond to the drug? Will the server crash tonight? You can't answer these with a yes or no. But you can say "there is a 3% chance of a click," "a 60% chance of response," "a 0.1% chance of failure." Those numbers are probabilities, and they follow precise mathematical rules.
+
+**Probability** is a number between 0 and 1 that measures how likely an event is. Zero means impossible. One means certain. Everything interesting lives in between.
+
+A **random variable** is the formal tool for attaching numbers to uncertain outcomes. When you flip a coin and define heads = 1 and tails = 0, you've created a random variable. When you measure the height of a randomly selected person, that measurement is a random variable. The word "random" doesn't mean chaotic. It means the outcome isn't known in advance, but the set of possible outcomes and their relative likelihoods can be described mathematically.
+
+Understanding random variables, how they behave, and what we can expect from them on average is the starting point for everything else on this site. Distributions, sampling, hypothesis testing, machine learning: all of it rests on this.
+
+## Historical root
+
+Probability theory began with gambling. In 1654, a French nobleman named Antoine Gombaud (known as the Chevalier de Mere) posed a question to Blaise Pascal: if two players are forced to stop a dice game early, how should they divide the stakes based on their current scores? Pascal wrote to Pierre de Fermat, and their exchange of letters became the first systematic treatment of probability.
+
+Their key insight was that you could reason about future outcomes by counting possibilities. If a player needed two more wins and there were at most four rounds remaining, you could list every possible sequence of wins and losses, count the favorable ones, and compute a fair split. This "counting favorable outcomes over total outcomes" approach is still how most people first encounter probability.
+
+Jacob Bernoulli pushed the field further in his 1713 book *Ars Conjectandi*, published eight years after his death. Bernoulli formalized the idea of repeated independent trials (coin flips, dice rolls) and proved the **Law of Large Numbers**: as you repeat an experiment more times, the observed proportion of outcomes converges to the theoretical probability. Flip a fair coin 10 times and you might get 7 heads. Flip it 10,000 times and the proportion of heads will be very close to 0.5.
+
+Andrey Kolmogorov gave probability its modern axiomatic foundation in 1933. Before Kolmogorov, probability was a collection of useful techniques without a unified logical structure. His three axioms (non-negativity, normalization, and additivity) turned probability into a branch of mathematics as rigorous as geometry or calculus. Every formula, theorem, and model in statistics traces back to those axioms.
+
+## Key assumptions
+
+Probability theory rests on a few core assumptions. Violating them doesn't make probability "wrong," but it does mean you need more advanced tools.
+
+**Defined sample space.** You must be able to list or describe all possible outcomes before computing probabilities. For a coin flip, the sample space is {heads, tails}. For a die roll, it's {1, 2, 3, 4, 5, 6}. For continuous measurements like height, the sample space is a range of real numbers. If you can't define the sample space, you can't assign probabilities.
+
+**Probabilities sum to 1.** Across all possible outcomes, the total probability must equal 1. Something has to happen. If you assign P(heads) = 0.5 and P(tails) = 0.4, you have 0.1 unaccounted for, and your model is broken.
+
+**Independence (when assumed).** Many probability calculations assume that one outcome doesn't affect another. The result of your first coin flip doesn't change the probability of the second. But in the real world, independence is often violated. A customer who bought yesterday is more likely to buy today. A server failure makes a second failure more likely if they share infrastructure. When events are dependent, you need conditional probability instead of simple multiplication.
+
+**Known or estimable probabilities.** Classical probability works when you know the probability in advance (a fair die has P(6) = 1/6). In practice, you often estimate probabilities from data (3 out of 100 visitors clicked, so estimated P(click) = 0.03). The quality of your estimate depends on sample size, which connects directly to sampling theory later in this series.
+
+## The math
+
+### The three axioms (Kolmogorov)
+
+Let $S$ be a sample space (the set of all possible outcomes) and let $A$ be an event (a subset of $S$). A probability function $P$ must satisfy three rules:
+
+$$P(A) \geq 0 \quad \text{for any event } A$$
+
+$$P(S) = 1$$
+
+$$P(A \cup B) = P(A) + P(B) \quad \text{if } A \text{ and } B \text{ are mutually exclusive}$$
+
+Everything else in probability theory is derived from these three rules.
+
+### Conditional probability
+
+The probability of $A$ given that $B$ has already occurred:
+
+$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$
+
+Consider a concrete case. If 40% of your users are mobile ($P(B) = 0.4$) and 2% of all users are mobile users who purchased ($P(A \cap B) = 0.02$), then the probability that a mobile user purchases is $P(A \mid B) = 0.02 / 0.4 = 0.05$, or 5%.
+
+### Independence
+
+Two events $A$ and $B$ are **independent** if and only if:
+
+$$P(A \cap B) = P(A) \cdot P(B)$$
+
+Equivalently, $P(A \mid B) = P(A)$. Knowing that $B$ happened tells you nothing about $A$. This is the formal version of "one outcome doesn't affect the other."
+
+### Random variables and expectation
+
+A **random variable** $X$ assigns a number to each outcome in the sample space. If $X$ is discrete (takes countable values like 0, 1, 2, ...), its behavior is described by a probability mass function:
+
+$$P(X = x) = p(x)$$
+
+The **expected value** (or mean) of a discrete random variable is:
+
+$$E[X] = \sum_{x} x \cdot P(X = x)$$
+
+This is a weighted average of all possible values, where the weights are the probabilities. For a fair six-sided die, $E[X] = 1(1/6) + 2(1/6) + \ldots + 6(1/6) = 3.5$. You will never roll a 3.5, but if you rolled the die thousands of times, the average would converge to that number. That convergence is Bernoulli's Law of Large Numbers.
+
+For a **continuous** random variable with probability density function $f(x)$:
+
+$$E[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx$$
+
+The interpretation is the same: a weighted average, but with integration instead of summation.
+
+## The code
+
+This script demonstrates three foundational probability concepts: the Law of Large Numbers through coin flips, conditional probability through a simulated dataset, and expected value through dice rolls.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(42)
+
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+
+# --- Law of Large Numbers ---
+# Flip a fair coin n times, track running proportion of heads
+n_flips = 10_000
+flips = rng.binomial(1, 0.5, n_flips)
+running_proportion = np.cumsum(flips) / np.arange(1, n_flips + 1)
+
+axes[0].plot(running_proportion, color="steelblue", linewidth=1)
+axes[0].axhline(y=0.5, color="black", linestyle="--", linewidth=1.5,
+                label="True P(heads) = 0.5")
+axes[0].set_xlabel("Number of flips")
+axes[0].set_ylabel("Proportion of heads")
+axes[0].set_title("Law of Large Numbers")
+axes[0].set_xscale("log")
+axes[0].legend()
+axes[0].set_ylim(0.3, 0.7)
+
+# --- Conditional Probability ---
+# Simulate 10,000 website visitors: device type and purchase behavior
+n_visitors = 10_000
+is_mobile = rng.binomial(1, 0.4, n_visitors)
+
+# Mobile users purchase at 5%, desktop at 8%
+purchase_prob = np.where(is_mobile, 0.05, 0.08)
+purchased = rng.binomial(1, purchase_prob)
+
+# Compute conditional probabilities from simulated data
+mobile_rate = purchased[is_mobile == 1].mean()
+desktop_rate = purchased[is_mobile == 0].mean()
+
+axes[1].bar(["Mobile", "Desktop"], [mobile_rate, desktop_rate],
+            color=["steelblue", "coral"], width=0.5)
+axes[1].set_ylabel("P(Purchase | Device)")
+axes[1].set_title("Conditional Probability")
+axes[1].set_ylim(0, 0.12)
+for i, rate in enumerate([mobile_rate, desktop_rate]):
+    axes[1].text(i, rate + 0.003, f"{rate:.3f}", ha="center", fontweight="bold")
+
+# --- Expected Value: Dice Rolls ---
+# Roll a die many times, track cumulative average vs E[X] = 3.5
+n_rolls = 5_000
+rolls = rng.integers(1, 7, n_rolls)
+cumulative_avg = np.cumsum(rolls) / np.arange(1, n_rolls + 1)
+
+axes[2].plot(cumulative_avg, color="steelblue", linewidth=1)
+axes[2].axhline(y=3.5, color="black", linestyle="--", linewidth=1.5,
+                label="E[X] = 3.5")
+axes[2].set_xlabel("Number of rolls")
+axes[2].set_ylabel("Cumulative average")
+axes[2].set_title("Expected Value (Fair Die)")
+axes[2].legend()
+axes[2].set_ylim(2.5, 4.5)
+
+plt.tight_layout()
+plt.savefig("probability_foundations.png", dpi=150)
+plt.show()
+```
+
+The left panel shows the Law of Large Numbers. Early on, the proportion of heads bounces wildly. After a few hundred flips it settles near 0.5 and stays there. The log scale on the x-axis makes the convergence pattern visible.
+
+The middle panel shows conditional probability computed from simulated data. Mobile users purchase at roughly 5%, desktop at roughly 8%. These rates are computed the same way you would compute them from real analytics data: count purchases within each group and divide by group size.
+
+The right panel shows expected value. The cumulative average of die rolls converges to 3.5, the theoretical expectation. No single roll equals 3.5, but the average over many rolls does.
+
+## Business application
+
+**A/B testing.** Every A/B test is a probability problem. When you ask "is version B better than version A?", you're asking whether the observed difference in conversion rates is likely under the assumption that both versions perform the same. That assumption is a probability statement, and the math behind the answer uses every concept in this post: sample spaces, conditional probability, random variables, and expectation.
+
+**Recommendation engines.** When Netflix shows you a movie with a "95% match," it's estimating the conditional probability that you will enjoy the film given your viewing history. That conditional probability is computed using the same $P(A \mid B)$ formula from the math section, scaled up across millions of users and thousands of features.
+
+**Fraud detection.** Fraud detection systems assign a probability of fraud to every transaction. If $P(\text{fraud} \mid \text{transaction features}) > 0.8$, the transaction gets flagged. The threshold, the features, and the probability estimates all depend on the foundations covered here.
+
+**Common mistakes.**
+
+Confusing probability with proportion is the most frequent error. A proportion is a fact about past data: "3% of last month's visitors purchased." A probability is a statement about future uncertainty: "the next visitor has a 3% chance of purchasing." The number might be the same, but the reasoning is different. Treating a historical proportion as a reliable probability without considering sample size or changing conditions leads to overconfident decisions.
+
+Assuming independence when events are dependent is equally dangerous. If you compute the probability of two servers failing as $P(A) \times P(B)$, you're assuming their failures are independent. But if both servers share the same power supply or the same network switch, the actual joint failure probability is much higher. Multiplying marginal probabilities only works when independence holds.
+
+Ignoring base rates is a subtler trap. If a disease affects 1 in 10,000 people and a test has a 1% false positive rate, a positive result doesn't mean you have a 99% chance of having the disease. The actual probability is much lower because the base rate is so small. This is Bayes' theorem in action, and it gets a full treatment in a later post. The mistake starts here: assuming that $P(\text{disease} \mid \text{positive test})$ is the same as $P(\text{positive test} \mid \text{disease})$. Those are two different conditional probabilities, and confusing them is one of the most consequential errors in applied statistics.
