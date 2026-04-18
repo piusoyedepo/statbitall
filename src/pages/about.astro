@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 
 <Base
   title="About | Statbitall"
-  description="Statbitall bridges statistical theory, code implementation, and real-world decision-making."
+  description="Statbitall covers the statistics behind every model, test, and algorithm — with code and math, nothing skipped."
   ogImage="/og-default.png"
 >
   <Nav />
@@ -17,56 +17,39 @@ import Footer from '../components/Footer.astro';
 
       <div class="about-body">
         <p>
-          Most statistics education splits into two unsatisfying camps: textbooks that
-          prove theorems but never touch data, and tutorials that show you how to call
-          <code>sklearn.fit()</code> without explaining what it's actually doing. Statbitall
-          sits in the gap. Every post starts with the underlying idea, traces it to its
-          mathematical foundation, implements it in code, and ends with a concrete example
-          of where it matters in practice.
+          Most statistics tutorials skip the math or skip the context. You either get a textbook
+          derivation with no code, or a scikit-learn tutorial with no explanation of what the
+          function actually computes. Statbitall covers both. Every post starts with the idea in
+          plain language, works through the formulas, implements them in Python, and ends with
+          when to use the method in practice and when to pick something else.
         </p>
+
+        <div class="module-list">
+          <div class="module-item">
+            <p><strong>Foundations.</strong> Probability, distributions, the central limit theorem, Bayes' theorem. The concepts that make everything else on the site work.</p>
+          </div>
+          <div class="module-item">
+            <p><strong>Statistical Tests.</strong> Hypothesis testing, t-tests, ANOVA, p-values, A/B testing. How to make decisions from data without fooling yourself.</p>
+          </div>
+          <div class="module-item">
+            <p><strong>ML Models.</strong> Regression, decision trees, clustering, PCA, ensembles. Machine learning explained through the statistics it's built on.</p>
+          </div>
+          <div class="module-item">
+            <p><strong>Business Analytics.</strong> Experiment design, churn modeling, forecasting, Simpson's paradox. Where statistical methods meet real business decisions.</p>
+          </div>
+          <div class="module-item">
+            <p><strong>AI and Deep Learning.</strong> Loss functions, gradient descent, embeddings, attention, LLMs. The statistical foundations of modern AI.</p>
+          </div>
+        </div>
 
         <p>
-          The goal is not to make statistics easier by removing the hard parts. It's to
-          make the hard parts feel inevitable, showing that the formulas aren't arbitrary,
-          that the assumptions aren't bureaucratic, and that the code is just the math
-          written in a different notation. If you leave a post understanding <em>why</em> a
-          method works rather than just <em>how</em> to use it, that's a success.
+          Every post follows the same six-part structure: the underlying idea, historical root,
+          key assumptions, the math, the code, and business application. Nothing gets skipped.
+          If a method has assumptions that break in practice, the post says so. If the math
+          requires a concept from an earlier post, there is a link.
         </p>
 
-        <p>
-          The content is organized into five modules, each covering a distinct area of
-          applied statistics and machine learning:
-        </p>
-
-        <ul class="module-list">
-          <li>
-            <strong>Module A: Foundations.</strong> Probability, distributions, the central
-            limit theorem, Bayes' theorem. The scaffolding everything else hangs on.
-          </li>
-          <li>
-            <strong>Module B: Inference.</strong> Hypothesis testing, t-tests, ANOVA,
-            confidence intervals. How to draw conclusions from data without fooling yourself.
-          </li>
-          <li>
-            <strong>Module C: Supervised learning.</strong> Regression, classification,
-            decision trees, ensembles. The core toolkit of predictive modeling.
-          </li>
-          <li>
-            <strong>Module D: Unsupervised learning.</strong> Clustering, dimensionality
-            reduction, density estimation. Finding structure without labels.
-          </li>
-          <li>
-            <strong>Module E: Causal inference.</strong> Experiments, observational studies,
-            difference-in-differences, instrumental variables. Moving from correlation to cause.
-          </li>
-        </ul>
-
-        <p>
-          Statbitall is written and maintained by a single person who has spent years doing
-          data work in industry and keeps finding that the clearest path to better decisions
-          is understanding the statistics behind the tools, not just running them.
-          More posts are added as they're finished.
-        </p>
+        <p>Statbitall is written by Pius Oyedepo.</p>
       </div>
     </div>
   </main>
@@ -109,41 +92,36 @@ import Footer from '../components/Footer.astro';
     color: var(--color-text-primary);
   }
 
-  .about-body p {
+  .about-body > p {
     margin: 0 0 1.5rem;
   }
 
-  .about-body em {
-    font-style: italic;
-  }
-
-  .about-body code {
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-size: 13px;
-    color: #1B9E77;
-    background-color: var(--color-border-subtle);
-    padding: 2px 6px;
-    border-radius: 4px;
+  .about-body strong {
+    font-weight: 500;
   }
 
   .module-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    margin: 0 0 1.5rem;
   }
 
-  .module-list li {
+  .module-item {
+    border-left: 3px solid #1B9E77;
+    background-color: #F5F3EF;
+    padding: 16px 20px;
+  }
+
+  .module-item p {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
     font-size: 15px;
     line-height: 1.6;
-    padding-left: 1rem;
-    border-left: 2px solid var(--color-border-default);
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
+    margin: 0;
   }
 
-  .module-list strong {
-    font-weight: 500;
+  .module-item strong {
+    color: var(--color-text-primary);
   }
 </style>
