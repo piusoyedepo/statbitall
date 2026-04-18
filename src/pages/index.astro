@@ -10,7 +10,7 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const posts = allPosts.slice(0, 3).map((p) => ({
+const posts = allPosts.map((p) => ({
   module: p.data.module,
   readTime: p.data.readTime,
   title: p.data.title,
@@ -179,15 +179,17 @@ const structureSteps = [
           ))}
         </div>
 
-        <div class="cards-grid">
+        <div class="cards-grid" id="cards-grid">
           {posts.map((post) => (
-            <BlogCard
-              module={post.module}
-              readTime={post.readTime}
-              title={post.title}
-              description={post.description}
-              href={post.href}
-            />
+            <div data-module={post.module}>
+              <BlogCard
+                module={post.module}
+                readTime={post.readTime}
+                title={post.title}
+                description={post.description}
+                href={post.href}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -219,6 +221,24 @@ const structureSteps = [
     <Footer />
 
 </Base>
+
+<script>
+  const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+  const cards = document.querySelectorAll<HTMLElement>('#cards-grid [data-module]');
+
+  pills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      pills.forEach((p) => p.classList.remove('filter-pill--active'));
+      pill.classList.add('filter-pill--active');
+
+      const selected = pill.dataset.module;
+      cards.forEach((card) => {
+        card.style.display =
+          selected === 'all' || card.dataset.module === selected ? '' : 'none';
+      });
+    });
+  });
+</script>
 
 <style>
   /* ─── Shared layout ──────────────────────────── */
