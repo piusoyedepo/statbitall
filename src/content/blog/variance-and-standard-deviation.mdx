@@ -39,31 +39,41 @@ The distinction between dividing by $n$ versus $n - 1$ when computing sample var
 
 **Population variance** for a variable $X$ with mean $\mu$:
 
-$$\sigma^2 = E[(X - \mu)^2] = \frac{1}{N}\sum_{i=1}^{N}(x_i - \mu)^2$$
+$$
+\sigma^2 = E[(X - \mu)^2] = \frac{1}{N}\sum_{i=1}^{N}(x_i - \mu)^2
+$$
 
 This is the average squared distance from the mean. Squaring serves two purposes: it makes all deviations positive (so values above and below the mean don't cancel out), and it penalizes large deviations more than small ones.
 
 **Sample variance** uses $n - 1$ in the denominator instead of $n$:
 
-$$s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2$$
+$$
+s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2
+$$
 
 The $n - 1$ is called **Bessel's correction**. The intuition: when you compute deviations from the sample mean $\bar{x}$ instead of the true mean $\mu$, the deviations are systematically smaller because $\bar{x}$ is chosen to minimize them. Dividing by $n - 1$ compensates for this, producing an unbiased estimate of $\sigma^2$.
 
 **Standard deviation** is the square root of variance:
 
-$$\sigma = \sqrt{\sigma^2} \qquad \text{(population)} \qquad s = \sqrt{s^2} \qquad \text{(sample)}$$
+$$
+\sigma = \sqrt{\sigma^2} \qquad \text{(population)} \qquad s = \sqrt{s^2} \qquad \text{(sample)}
+$$
 
 Standard deviation is in the same units as the original data. If your data is in dollars, variance is in "dollars squared" (which has no intuitive meaning), but standard deviation is back in dollars.
 
 **Standard error of the mean** connects standard deviation to sampling precision:
 
-$$\text{SE}(\bar{X}) = \frac{s}{\sqrt{n}}$$
+$$
+\text{SE}(\bar{X}) = \frac{s}{\sqrt{n}}
+$$
 
 This is the standard deviation of the sampling distribution of the mean, not the standard deviation of the data itself. It tells you how much your sample mean would vary if you repeated the sampling process many times. This formula was central to the sampling post (A3) and shows up in every confidence interval and hypothesis test.
 
 **Coefficient of variation** (CV) allows comparison across different scales:
 
-$$\text{CV} = \frac{s}{\bar{x}} \times 100\%$$
+$$
+\text{CV} = \frac{s}{\bar{x}} \times 100\%
+$$
 
 A CV of 10% means the standard deviation is 10% of the mean, regardless of the units. This lets you compare the relative variability of two measurements on completely different scales.
 
@@ -155,6 +165,6 @@ The right panel demonstrates Bessel's correction. Dividing by $n$ systematically
 
 **Manufacturing quality control.** In manufacturing, low variance means consistent output. If a machine is supposed to cut parts to 10.0 cm, a standard deviation of 0.01 cm means almost every part is within spec. A standard deviation of 0.5 cm means many parts will be rejected. Control charts track variance over time: a sudden increase in variance signals that something in the process has changed, even if the mean hasn't moved.
 
-**A/B test sample size calculations.** When planning an A/B test, you need the expected variance of the metric to determine how many users you need. Higher variance means you need more data to detect a given effect size. If your revenue-per-user has a standard deviation of $50 and you want to detect a $2 difference, you'll need a much larger sample than if the standard deviation were $5. The standard error formula ($s / \sqrt{n}$) is the direct link between variance, sample size, and statistical power.
+**A/B test sample size calculations.** When planning an A/B test, you need the expected variance of the metric to determine how many users you need. Higher variance means you need more data to detect a given effect size. If your revenue-per-user has a standard deviation of \$50 and you want to detect a \$2 difference, you'll need a much larger sample than if the standard deviation were \$5. The standard error formula ($s / \sqrt{n}$) is the direct link between variance, sample size, and statistical power.
 
 **When high variance is informative, not problematic.** In customer segmentation, high variance in a metric can signal that you're looking at a mixture of distinct groups. If average session duration has a standard deviation nearly as large as the mean, your "average user" doesn't exist. There are probably short-session users and long-session users, and analyzing them as a single group hides the real patterns. High variance is a signal to stratify, not a problem to solve.

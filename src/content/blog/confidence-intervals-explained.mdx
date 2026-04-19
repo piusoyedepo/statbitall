@@ -41,27 +41,37 @@ The Bayesian alternative, the **credible interval**, does allow the statement "t
 
 The general form of a confidence interval is:
 
-$$\text{estimate} \pm \text{critical value} \times \text{standard error}$$
+$$
+\text{estimate} \pm \text{critical value} \times \text{standard error}
+$$
 
 For a **population mean** with known variance:
 
-$$\bar{X} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$
+$$
+\bar{X} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}
+$$
 
 where $z_{\alpha/2}$ is the critical value from the standard normal distribution. For a 95% interval, $z_{0.025} = 1.96$.
 
 In practice, you don't know $\sigma$ and must estimate it from the sample. This changes the distribution from normal to **Student's t**:
 
-$$\bar{X} \pm t_{\alpha/2, n-1} \cdot \frac{s}{\sqrt{n}}$$
+$$
+\bar{X} \pm t_{\alpha/2, n-1} \cdot \frac{s}{\sqrt{n}}
+$$
 
 The t-distribution has heavier tails than the normal, producing wider intervals that account for the uncertainty in estimating $\sigma$. With large $n$, the t-distribution converges to the normal, and the distinction vanishes.
 
 For a **proportion**:
 
-$$\hat{p} \pm z_{\alpha/2} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+$$
+\hat{p} \pm z_{\alpha/2} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+$$
 
 This is the Wald interval. It works well when $n\hat{p}$ and $n(1-\hat{p})$ are both at least 10. When they aren't (rare events, small samples), the Wilson interval is more reliable:
 
-$$\tilde{p} \pm \frac{z_{\alpha/2}}{1 + z^2/n} \sqrt{\frac{\hat{p}(1-\hat{p})}{n} + \frac{z^2}{4n^2}}$$
+$$
+\tilde{p} \pm \frac{z_{\alpha/2}}{1 + z^2/n} \sqrt{\frac{\hat{p}(1-\hat{p})}{n} + \frac{z^2}{4n^2}}
+$$
 
 where $\tilde{p} = (\hat{p} + z^2/2n) / (1 + z^2/n)$. The Wilson interval doesn't collapse to zero width when $\hat{p} = 0$ or 1, which is a known failure mode of the Wald interval.
 
