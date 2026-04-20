@@ -259,9 +259,15 @@ const structureSteps = [
             No fluff, no filler. Just the statistics behind the code, delivered to
             your inbox.
           </p>
-          <form class="newsletter-form" onsubmit="return false;">
+          <form
+            class="newsletter-form"
+            action="https://buttondown.com/api/emails/embed-subscribe/statbitall"
+            method="post"
+            target="popupwindow"
+          >
             <input
               type="email"
+              name="email"
               placeholder="you@example.com"
               class="newsletter-input"
               aria-label="Email address"
