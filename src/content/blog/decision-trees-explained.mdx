@@ -6,6 +6,8 @@ date: 2025-04-15
 readTime: '10 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/c1-decision-trees.png';
 
 ## The underlying idea
 
@@ -68,6 +70,8 @@ where the sum runs over the child nodes created by the split, $n_j$ is the numbe
 The algorithm checks every feature and every possible threshold for that feature. For a continuous variable with 100 unique values, that's 99 possible splits for that feature alone. Multiply by the number of features and you see why training is computationally straightforward but not free.
 
 ## The code
+
+<Image src={chartImage} alt="Training vs test accuracy across decision tree depths showing overfitting" />
 
 Here's a complete example: training a decision tree, inspecting what it learned, and understanding where it breaks down.
 

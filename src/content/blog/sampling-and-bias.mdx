@@ -6,6 +6,8 @@ date: 2025-04-29
 readTime: '10 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/a3-sampling.png';
 
 ## The underlying idea
 
@@ -72,6 +74,8 @@ $$\bar{X}_{\text{strat}} = \sum_{h=1}^{H} W_h \bar{X}_h$$
 where $W_h$ is the proportion of the population in stratum $h$ and $\bar{X}_h$ is the sample mean within stratum $h$. If the strata are internally homogeneous, the stratified standard error will be smaller than the simple random sampling standard error for the same total $n$.
 
 ## The code
+
+<Image src={chartImage} alt="Three panels showing sample size vs precision, bias vs random sampling, and stratified vs simple random sampling" />
 
 This script demonstrates three things: how sample size affects precision, how bias distorts results regardless of sample size, and how stratified sampling reduces variance.
 

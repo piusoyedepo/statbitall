@@ -6,6 +6,8 @@ date: 2025-05-13
 readTime: '10 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/a5-confidence-intervals.png';
 
 ## The underlying idea
 
@@ -76,6 +78,8 @@ $$
 where $\tilde{p} = (\hat{p} + z^2/2n) / (1 + z^2/n)$. The Wilson interval doesn't collapse to zero width when $\hat{p} = 0$ or 1, which is a known failure mode of the Wald interval.
 
 ## The code
+
+<Image src={chartImage} alt="Two panels showing 100 confidence intervals with capture rate and interval width vs sample size" />
 
 This script demonstrates what "95% confidence" actually means by simulating many confidence intervals and counting how many capture the true value.
 

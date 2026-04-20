@@ -6,6 +6,8 @@ date: 2025-04-22
 readTime: '9 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/a2-distributions.png';
 
 ## The underlying idea
 
@@ -66,6 +68,8 @@ $$f(x) = \lambda e^{-\lambda x}, \quad x \geq 0$$
 The mean is $1/\lambda$. If events arrive at rate $\lambda$ per unit time, the average wait between events is $1/\lambda$. The memoryless property means $P(X > s + t \mid X > s) = P(X > t)$.
 
 ## The code
+
+<Image src={chartImage} alt="Four panels showing normal, binomial, Poisson, and exponential distributions" />
 
 Here's how to generate data from each distribution, visualize the shapes, and test whether real data matches an assumed distribution:
 

@@ -6,6 +6,8 @@ date: 2025-04-01
 readTime: '7 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/a1-clt.png';
 
 ## The underlying idea
 
@@ -52,6 +54,8 @@ $$
 The term $\sigma / \sqrt{n}$ is the **standard error**, the standard deviation of the sampling distribution. Quadrupling your sample size halves the standard error, which is why larger studies produce narrower confidence intervals.
 
 ## The code
+
+<Image src={chartImage} alt="Three panels showing an exponential population and its sampling distributions at n=5 and n=30" />
 
 Here's a direct demonstration. We'll draw from an exponential distribution (skewed right, nothing like a bell curve), compute sample means repeatedly, and watch the CLT force them into normality.
 

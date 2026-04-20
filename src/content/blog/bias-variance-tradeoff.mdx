@@ -6,6 +6,8 @@ date: 2025-05-20
 readTime: '10 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/a6-bias-variance.png';
 
 ## The underlying idea
 
@@ -62,6 +64,8 @@ A model with high variance gives different predictions depending on which traini
 The tradeoff works like this: as you increase model complexity, bias typically decreases (the model can represent more patterns) and variance typically increases (the model becomes more sensitive to the specific training data). The total error follows a U-shaped curve, and the minimum of that curve is the sweet spot.
 
 ## The code
+
+<Image src={chartImage} alt="Polynomial fits at degrees 1, 5, and 15 showing the bias-variance tradeoff, with decomposition plot" />
 
 This script demonstrates the bias-variance tradeoff using polynomial regression at different complexities.
 

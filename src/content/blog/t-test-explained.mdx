@@ -6,6 +6,8 @@ date: 2025-04-08
 readTime: '6 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/b1-ttest.png';
 
 ## The underlying idea
 
@@ -66,6 +68,8 @@ The denominator now uses each group's own variance estimate separately. The degr
 Once you have the t-statistic, you compare it against the t-distribution with the appropriate degrees of freedom. The p-value is the probability of seeing a t-statistic at least as extreme as yours if the null hypothesis (no real difference) were true.
 
 ## The code
+
+<Image src={chartImage} alt="Violin plot comparing control and treatment groups with different variances" />
 
 Here's a direct comparison showing both versions and why Welch's is the safer default:
 

@@ -6,6 +6,8 @@ date: 2025-05-06
 readTime: '9 min read'
 draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/a4-variance.png';
 
 ## The underlying idea
 
@@ -78,6 +80,8 @@ $$
 A CV of 10% means the standard deviation is 10% of the mean, regardless of the units. This lets you compare the relative variability of two measurements on completely different scales.
 
 ## The code
+
+<Image src={chartImage} alt="Three panels showing same mean with different variance, standard deviation vs standard error, and Bessel's correction" />
 
 This script demonstrates the difference between variance, standard deviation, and standard error, and shows why high variance isn't always bad.
 
