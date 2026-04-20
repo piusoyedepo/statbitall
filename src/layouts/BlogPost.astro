@@ -24,6 +24,9 @@ const formattedDate = date.toLocaleDateString('en-US', {
 <Base title={`${title} | Statbitall`} description={description} ogImage="/og-default.png">
   <Nav />
 
+  <!-- TOC sidebar (desktop only, populated by JS) -->
+  <nav class="toc-sidebar" id="toc-sidebar" aria-label="Table of contents"></nav>
+
   <article class="post-wrapper">
     <div class="post-inner">
       <!-- Back link -->
@@ -257,6 +260,22 @@ const formattedDate = date.toLocaleDateString('en-US', {
     line-height: 1.5;
   }
 
+  /* TOC sidebar */
+  .toc-sidebar {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: max(1rem, calc(50% - 580px));
+    width: 190px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  @media (min-width: 1280px) {
+    .toc-sidebar { display: block; }
+  }
+
   /* Byline */
   .post-byline {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
@@ -331,6 +350,32 @@ const formattedDate = date.toLocaleDateString('en-US', {
     color: var(--color-text-primary);
   }
 
+  /* Heading anchor links */
+  .prose :global(h2),
+  .prose :global(h3) {
+    position: relative;
+  }
+
+  .prose :global(.heading-anchor) {
+    position: absolute;
+    left: -1.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.8em;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    line-height: 1;
+  }
+
+  .prose :global(h2:hover .heading-anchor),
+  .prose :global(h3:hover .heading-anchor) {
+    opacity: 1;
+  }
+
   /* h2 scroll reveal */
   .prose :global(h2) {
     opacity: 0;
@@ -353,23 +398,100 @@ const formattedDate = date.toLocaleDateString('en-US', {
 </style>
 
 <script>
-  const headings = document.querySelectorAll('.prose h2');
+  const headings = document.querySelectorAll<HTMLElement>('.prose h2');
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ── Scroll-reveal for h2 ──
   if (prefersReduced) {
     headings.forEach((h) => h.classList.add('revealed'));
   } else {
-    const observer = new IntersectionObserver(
+    const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('revealed');
-            observer.unobserve(entry.target);
+            revealObserver.unobserve(entry.target);
           }
         });
       },
       { rootMargin: '-20px' }
     );
-    headings.forEach((h) => observer.observe(h));
+    headings.forEach((h) => revealObserver.observe(h));
+  }
+
+  // ── Anchor links on h2 and h3 ──
+  document.querySelectorAll<HTMLElement>('.prose h2, .prose h3').forEach((heading) => {
+    const id = heading.id;
+    if (!id) return;
+    const anchor = document.createElement('a');
+    anchor.href = `#${id}`;
+    anchor.className = 'heading-anchor';
+    anchor.setAttribute('aria-label', 'Link to this section');
+    anchor.textContent = '#';
+    heading.insertBefore(anchor, heading.firstChild);
+  });
+
+  // ── Table of contents (desktop only) ──
+  const tocSidebar = document.getElementById('toc-sidebar');
+  if (tocSidebar && headings.length > 0) {
+    const tocList = document.createElement('ul');
+    tocList.className = 'toc-list';
+    tocList.style.cssText = 'list-style:none;margin:0;padding:0;';
+
+    headings.forEach((heading) => {
+      const id = heading.id;
+      if (!id) return;
+      const text = heading.textContent?.replace('#', '').trim() ?? '';
+      const li = document.createElement('li');
+      li.style.cssText = 'margin:0;';
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = text;
+      a.className = 'toc-link';
+      a.style.cssText = [
+        'display:block',
+        'font-family:"IBM Plex Sans",system-ui,sans-serif',
+        'font-size:13px',
+        'line-height:1.4',
+        'color:#6B6B6B',
+        'text-decoration:none',
+        'padding:4px 0 4px 10px',
+        'border-left:2px solid transparent',
+        'transition:color 0.15s ease,border-color 0.15s ease',
+        'margin-bottom:2px',
+      ].join(';');
+      a.addEventListener('mouseenter', () => {
+        if (!a.classList.contains('toc-link--active')) a.style.color = '#1A1A1A';
+      });
+      a.addEventListener('mouseleave', () => {
+        if (!a.classList.contains('toc-link--active')) a.style.color = '#6B6B6B';
+      });
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    tocSidebar.appendChild(tocList);
+
+    // Highlight active section on scroll
+    const tocLinks = tocSidebar.querySelectorAll<HTMLElement>('.toc-link');
+    const setActive = (id: string) => {
+      tocLinks.forEach((link) => {
+        const isActive = link.getAttribute('href') === `#${id}`;
+        link.classList.toggle('toc-link--active', isActive);
+        link.style.color = isActive ? '#1B9E77' : '#6B6B6B';
+        link.style.borderLeftColor = isActive ? '#1B9E77' : 'transparent';
+        link.style.fontWeight = isActive ? '500' : '400';
+      });
+    };
+
+    const activeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-10% 0px -80% 0px' }
+    );
+    headings.forEach((h) => activeObserver.observe(h));
   }
 </script>

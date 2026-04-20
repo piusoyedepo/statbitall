@@ -1,5 +1,11 @@
 ---
-// Nav.astro - sticky site navigation with mobile hamburger
+import { getCollection } from 'astro:content';
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const searchData = allPosts.map((p) => ({
+  title: p.data.title,
+  description: p.data.description,
+  href: `/blog/${p.id}`,
+}));
 ---
 
 <nav style="background-color: #0B1D3A;" class="sticky top-0 z-50 w-full">
@@ -20,11 +26,21 @@
       </a>
     </div>
 
-    <!-- Right: desktop links + dark toggle -->
+    <!-- Right: desktop links + search + dark toggle -->
     <div class="nav-right">
       <a href="/#latest-posts" class="nav-link">Blog</a>
       <a href="/about" class="nav-link">About</a>
       <a href="/#newsletter" class="nav-cta">Newsletter</a>
+      <button
+        id="search-btn"
+        aria-label="Search posts"
+        class="nav-icon-btn"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
       <button
         id="dark-toggle"
         onclick="window.toggleDark()"
@@ -95,6 +111,31 @@
     <a href="/#latest-posts" class="mobile-link" onclick="closeMobileMenu()">Blog</a>
     <a href="/about" class="mobile-link" onclick="closeMobileMenu()">About</a>
     <a href="/#newsletter" class="mobile-link mobile-link--cta" onclick="closeMobileMenu()">Newsletter</a>
+  </div>
+
+  <!-- Search overlay -->
+  <div id="search-overlay" class="search-overlay" hidden>
+    <div class="search-bar-row">
+      <svg class="search-icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input
+        id="search-input"
+        type="text"
+        class="search-field"
+        placeholder="Search posts..."
+        autocomplete="off"
+        aria-label="Search posts"
+      />
+      <button id="search-close" class="search-close" aria-label="Close search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div id="search-results" class="search-results-list"></div>
   </div>
 </nav>
 
@@ -264,7 +305,173 @@
     font-weight: 600;
   }
   .mobile-link--cta:hover { color: #1B9E77; }
+
+  /* ── Search overlay ── */
+  .search-overlay {
+    background-color: #0B1D3A;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .search-overlay { padding: 12px 2rem; }
+  }
+
+  .search-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .search-icon-inline {
+    color: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+  }
+
+  .search-field {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    color: #ffffff;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    padding: 7px 12px;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .search-field::placeholder { color: rgba(255,255,255,0.4); }
+  .search-field:focus { border-color: #1B9E77; }
+
+  .search-close {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    transition: color 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .search-close:hover { color: #ffffff; }
+
+  .search-results-list {
+    max-width: 600px;
+    margin: 8px auto 0;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    display: none;
+  }
+
+  .search-results-list.has-results { display: block; }
+
+  :global(.search-result-item) {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    border-bottom: 1px solid #EDEBE7;
+    transition: background-color 0.1s ease;
+  }
+
+  :global(.search-result-item:last-child) { border-bottom: none; }
+  :global(.search-result-item:hover) { background-color: #F5F3EF; }
+
+  :global(.search-result-title) {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1A1A1A;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  :global(.search-result-desc) {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 12px;
+    color: #6B6B6B;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.search-no-results) {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    color: #6B6B6B;
+    padding: 12px 16px;
+    text-align: center;
+  }
 </style>
+
+<script define:vars={{ searchData }}>
+  // ── Search ──
+  const searchBtn = document.getElementById('search-btn');
+  const searchOverlay = document.getElementById('search-overlay');
+  const searchInput = document.getElementById('search-input');
+  const searchClose = document.getElementById('search-close');
+  const searchResultsList = document.getElementById('search-results');
+
+  function openSearch() {
+    searchOverlay?.removeAttribute('hidden');
+    searchInput?.focus();
+  }
+
+  function closeSearch() {
+    searchOverlay?.setAttribute('hidden', '');
+    if (searchResultsList) {
+      searchResultsList.innerHTML = '';
+      searchResultsList.classList.remove('has-results');
+    }
+    if (searchInput instanceof HTMLInputElement) searchInput.value = '';
+  }
+
+  searchBtn?.addEventListener('click', openSearch);
+  searchClose?.addEventListener('click', closeSearch);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearch();
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target instanceof HTMLInputElement ? e.target.value : '').trim().toLowerCase();
+    if (!searchResultsList) return;
+
+    if (!query) {
+      searchResultsList.innerHTML = '';
+      searchResultsList.classList.remove('has-results');
+      return;
+    }
+
+    const matches = searchData.filter((post) =>
+      post.title.toLowerCase().includes(query) ||
+      post.description.toLowerCase().includes(query)
+    ).slice(0, 6);
+
+    if (matches.length === 0) {
+      searchResultsList.innerHTML = '<span class="search-no-results">No posts found</span>';
+    } else {
+      searchResultsList.innerHTML = matches.map((post) =>
+        `<a href="${post.href}" class="search-result-item">
+          <span class="search-result-title">${post.title}</span>
+          <span class="search-result-desc">${post.description}</span>
+        </a>`
+      ).join('');
+    }
+    searchResultsList.classList.add('has-results');
+  });
+</script>
 
 <script>
   const hamburger = document.getElementById('hamburger');

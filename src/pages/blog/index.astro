@@ -4,9 +4,23 @@ import Nav from '../../components/Nav.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import Footer from '../../components/Footer.astro';
 import { getCollection } from 'astro:content';
+import type { ImageMetadata } from 'astro';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../../assets/images/*.png', { eager: true });
+const imageMap: Record<string, ImageMetadata | undefined> = {
+  'probability-theory-foundations':      images['../../assets/images/a0-probability.png']?.default,
+  'central-limit-theorem':               images['../../assets/images/a1-clt.png']?.default,
+  'probability-distributions-explained': images['../../assets/images/a2-distributions.png']?.default,
+  'sampling-and-bias':                   images['../../assets/images/a3-sampling.png']?.default,
+  'variance-and-standard-deviation':     images['../../assets/images/a4-variance.png']?.default,
+  'confidence-intervals-explained':      images['../../assets/images/a5-confidence-intervals.png']?.default,
+  'bias-variance-tradeoff':              images['../../assets/images/a6-bias-variance.png']?.default,
+  't-test-explained':                    images['../../assets/images/b1-ttest.png']?.default,
+  'decision-trees-explained':            images['../../assets/images/c1-decision-trees.png']?.default,
+};
 
 const posts = allPosts.map((p) => ({
   module: p.data.module,
@@ -14,6 +28,7 @@ const posts = allPosts.map((p) => ({
   title: p.data.title,
   description: p.data.description,
   href: `/blog/${p.id}`,
+  thumbnail: imageMap[p.id],
 }));
 
 const moduleFilters = [
@@ -53,6 +68,7 @@ const moduleFilters = [
               title={post.title}
               description={post.description}
               href={post.href}
+              thumbnail={post.thumbnail}
             />
           </div>
         ))}

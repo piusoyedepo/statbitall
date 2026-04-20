@@ -25,8 +25,8 @@ Nothing else on the site makes sense without these. A reader who finishes Phase 
 | 4 | A4 | Variance is risk. Standard deviation is the language of risk. | Foundations | ✅| A1, A2 | What each measures, how they differ, when to use which. Standard error callback to CLT ties the series together. |
 | 5 | A12 | Conditional probability is the reason most intuitions fail | Foundations | ⬜ | A2 | Base rate fallacy, medical testing, prosecutor's fallacy. Sets up Bayes. |
 | 6 | A11 | Bayes' theorem is how you update beliefs with evidence | Foundations | ⬜ | A12 | Required before Bayesian thinking in Phase 2. |
-| 7 | A5 | Confidence intervals don't mean what you think they mean | Foundations | ⬜ | A1, A3, A4 | The most misinterpreted concept in applied statistics. Builds on CLT, sampling, and standard error. |
-| 8 | A6 | The bias-variance tradeoff controls every model you'll ever build | Foundations | ⬜ | A4 | The foundational tension behind all ML. Hold until just before Phase 3. |
+| 7 | A5 | Confidence intervals don't mean what you think they mean | Foundations | ✅ | A1, A3, A4 | The most misinterpreted concept in applied statistics. Builds on CLT, sampling, and standard error. |
+| 8 | A6 | The bias-variance tradeoff controls every model you'll ever build | Foundations | ✅ | A4 | The foundational tension behind all ML. Hold until just before Phase 3. |
 
 **Suggested next-4 writing order:** A2 → A3 → A4 → A5. Posts A12 and A11 (conditional probability, Bayes) can slot in before A5. A6 (bias-variance) should wait until just before Phase 3 starts.
 
