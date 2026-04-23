@@ -3,10 +3,11 @@ title: "Hypothesis testing from scratch: the logic before the formula"
 description: "Most courses start with p-values. That's the wrong place to start. Here's the logical framework that makes hypothesis testing coherent — before a single formula appears."
 date: 2026-04-21
 readTime: "12 min read"
-module: "B"
-slug: "b0-hypothesis-testing-logic"
-tags: ["hypothesis testing", "statistical inference", "null hypothesis", "p-value", "type I error", "type II error"]
+module: B
+draft: false
 ---
+import { Image } from 'astro:assets';
+import chartImage from '../../assets/images/b0-hypothesis-testing-chart.png';
 
 ## The Underlying Idea
 
@@ -92,6 +93,8 @@ where $\bar{X}$ is the sample mean, $\mu_0$ is the null hypothesis value, $s$ is
 The specific formula changes depending on the test — z-tests, chi-squared, F-tests, likelihood ratio tests all have different statistics and null distributions. The logic doesn't change. You always ask: how extreme is this observation, assuming nothing is happening?
 
 ## The Code
+
+<Image src={chartImage} alt="t-distribution null distribution with two-tailed rejection regions shaded at alpha = 0.05, with observed t statistic marked" />
 
 The following builds hypothesis testing from scratch — computing the test statistic and p-value manually so you can see exactly what's happening inside a function like `scipy.stats.ttest_1samp`.
 
