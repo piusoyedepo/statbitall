@@ -39,7 +39,7 @@ Now that readers understand distributions, sampling, and uncertainty, they can l
 | Post | ID | Title | Module | Status | Prerequisites | Notes |
 |------|----|-------|--------|--------|---------------|-------|
 | 9 | B0 | Hypothesis testing from scratch: the logic before the formula | Statistical Tests | ✅ | Phase 1 | Null vs alternative, test statistics, decision rules. No specific test yet, just the framework. |
-| 10 | B5 | p-values are not what you were taught | Statistical Tests | ⬜ | B0 | Neyman-Pearson vs Fisher. Why 0.05 is arbitrary. How p-hacking happens. |
+| 10 | B5 | p-values are not what you were taught | Statistical Tests | ✅ | B0 | Neyman-Pearson vs Fisher. Why 0.05 is arbitrary. How p-hacking happens. |
 | 11 | B1 | The t-test: what it's really asking | Statistical Tests | ✅ | B0, B5 | One-sample, two-sample, paired. Full derivation, Python, assumptions. |
 | 12 | B2 | ANOVA is not just multiple t-tests (and here's why) | Statistical Tests | ⬜ | B1 | Why you can't run multiple t-tests. F-statistic, post-hoc tests. |
 | 13 | B3 | Chi-square tests: how to make decisions from categories | Statistical Tests | ⬜ | B0 | Goodness of fit, test of independence. Categorical data. |
