@@ -50,7 +50,9 @@ Jacob Cohen formalized power analysis for the social sciences in his 1969 book *
 
 For a two-sample t-test comparing means, the required sample size per group to achieve power $1 - \beta$ at significance level $\alpha$ is:
 
-$$n = \frac{2(z_{\alpha/2} + z_{\beta})^2 \sigma^2}{\delta^2}$$
+$$
+n = \frac{2(z_{\alpha/2} + z_{\beta})^2 \sigma^2}{\delta^2}
+$$
 
 where $z_{\alpha/2}$ is the critical value for the significance level (1.96 for alpha = 0.05, two-tailed), $z_{\beta}$ is the critical value for the desired power (0.84 for 80% power, 1.28 for 90% power), $\sigma$ is the standard deviation of the outcome, and $\delta$ is the minimum detectable effect.
 
@@ -64,7 +66,9 @@ To reduce alpha ($z_{\alpha/2}$ increases), $n$ must increase. Being more conser
 
 **Cohen's d** standardizes the effect size by the standard deviation:
 
-$$d = \frac{\delta}{\sigma}$$
+$$
+d = \frac{\delta}{\sigma}
+$$
 
 Cohen's conventions: small effect d = 0.2, medium effect d = 0.5, large effect d = 0.8. A medium effect requires about 64 observations per group for 80% power at alpha = 0.05. A small effect requires about 394 per group.
 
@@ -122,7 +126,7 @@ The right panel shows all three concepts simultaneously. The null and alternativ
 
 **Pre-experiment planning is the only honest approach.** Before running an A/B test, calculate the required sample size based on your baseline metric, the minimum lift you care about, and your target power. If you can't reach that sample size in a reasonable time, the test won't answer your question. Running it anyway and declaring "no effect" is not valid inference. It's an inconclusive experiment presented as a conclusion.
 
-**Choosing the minimum detectable effect (MDE).** The MDE is a business decision, not a statistical one. A 0.1% conversion lift on $100M revenue is $100K annually. Worth detecting. A 0.1% lift on $50K revenue is $50. Probably not worth a long experiment. Set the MDE based on what difference would actually change your decision, then let statistics tell you how much data that requires.
+**Choosing the minimum detectable effect (MDE).** The MDE is a business decision, not a statistical one. A 0.1% conversion lift on \$100M revenue is \$100K annually. Worth detecting. A 0.1% lift on \$50K revenue is \$50. Probably not worth a long experiment. Set the MDE based on what difference would actually change your decision, then let statistics tell you how much data that requires.
 
 **Underpowered studies in medical research.** Cohen's 1962 survey of psychology journals found average power of roughly 46% for medium effects. More recent analyses of clinical trials have found similar patterns, with many trials too small to reliably detect clinically meaningful differences. An underpowered trial that finds p greater than 0.05 doesn't prove a treatment doesn't work. It proves the study couldn't tell either way.
 
