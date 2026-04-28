@@ -43,7 +43,7 @@ Now that readers understand distributions, sampling, and uncertainty, they can l
 | 11 | B1 | The t-test: what it's really asking | Statistical Tests | ✅ | B0, B5 | One-sample, two-sample, paired. Full derivation, Python, assumptions. |
 | 12 | B2 | ANOVA is not just multiple t-tests (and here's why) | Statistical Tests | ⬜ | B1 | Why you can't run multiple t-tests. F-statistic, post-hoc tests. |
 | 13 | B3 | Chi-square tests: how to make decisions from categories | Statistical Tests | ⬜ | B0 | Goodness of fit, test of independence. Categorical data. |
-| 14 | B4 | Statistical power is why your A/B test found nothing | Statistical Tests | ⬜ | B0, B5 | Underpowered experiments. The real cost of low power. |
+| 14 | B4 | Statistical power is why your A/B test found nothing | Statistical Tests | ✅ | B0, B5 | Underpowered experiments. The real cost of low power. |
 | 15 | B8 | A/B testing under the hood: what the platform isn't telling you | Statistical Tests | ⬜ | B1, B4, B5 | Peeking, stopping rules, sequential testing. Business-facing capstone for this phase. |
 | 16 | B7 | Bayesian vs frequentist: two ways to think about the same data | Statistical Tests | ⬜ | A11, B5 | Priors, posteriors, updating. Requires Bayes' theorem from Phase 1. |
 
