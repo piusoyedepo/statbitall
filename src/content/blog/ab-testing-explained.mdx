@@ -9,6 +9,7 @@ draft: false
 
 import abtestChart from '../../assets/images/b8-abtesting.png';
 import { Image } from 'astro:assets';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -67,6 +68,8 @@ At $k = 5$ peeks: actual rate is roughly $0.05 \times (1 + 1.61) = 0.13$. At $k 
 ## The code
 
 <Image src={abtestChart} alt="Three panels showing peeking inflation, sample size vs effect size, and multiple metrics family-wise error rate" />
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/b8-ab-testing.py" />
 
 ```python
 import numpy as np

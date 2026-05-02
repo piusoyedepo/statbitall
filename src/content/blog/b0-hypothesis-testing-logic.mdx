@@ -8,6 +8,7 @@ draft: false
 ---
 import { Image } from 'astro:assets';
 import chartImage from '../../assets/images/b0-hypothesis-testing-chart.png';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The Underlying Idea
 
@@ -97,6 +98,8 @@ The specific formula changes depending on the test. z-tests, chi-squared, F-test
 <Image src={chartImage} alt="t-distribution null distribution with two-tailed rejection regions shaded at alpha = 0.05, with observed t statistic marked" />
 
 The following builds hypothesis testing from scratch, computing the test statistic and p-value manually so you can see exactly what's happening inside a function like `scipy.stats.ttest_1samp`.
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/b0-hypothesis-testing.py" />
 
 ```python
 import numpy as np

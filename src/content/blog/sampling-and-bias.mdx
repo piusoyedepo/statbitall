@@ -8,6 +8,7 @@ draft: false
 ---
 import { Image } from 'astro:assets';
 import chartImage from '../../assets/images/a3-sampling.png';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -78,6 +79,8 @@ where $W_h$ is the proportion of the population in stratum $h$ and $\bar{X}_h$ i
 <Image src={chartImage} alt="Three panels showing sample size vs precision, bias vs random sampling, and stratified vs simple random sampling" />
 
 This script demonstrates three things: how sample size affects precision, how bias distorts results regardless of sample size, and how stratified sampling reduces variance.
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/a3-sampling-and-bias.py" />
 
 ```python
 import numpy as np

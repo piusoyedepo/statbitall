@@ -8,6 +8,7 @@ draft: false
 ---
 import { Image } from 'astro:assets';
 import chartImage from '../../assets/images/a5-confidence-intervals.png';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -82,6 +83,8 @@ where $\tilde{p} = (\hat{p} + z^2/2n) / (1 + z^2/n)$. The Wilson interval doesn'
 <Image src={chartImage} alt="Two panels showing 100 confidence intervals with capture rate and interval width vs sample size" />
 
 This script demonstrates what "95% confidence" actually means by simulating many confidence intervals and counting how many capture the true value.
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/a5-confidence-intervals.py" />
 
 ```python
 import numpy as np

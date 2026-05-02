@@ -8,6 +8,7 @@ draft: false
 ---
 import { Image } from 'astro:assets';
 import chartImage from '../../assets/images/a4-variance.png';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -84,6 +85,8 @@ A CV of 10% means the standard deviation is 10% of the mean, regardless of the u
 <Image src={chartImage} alt="Three panels showing same mean with different variance, standard deviation vs standard error, and Bessel's correction" />
 
 This script demonstrates the difference between variance, standard deviation, and standard error, and shows why high variance isn't always bad.
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/a4-variance-standard-deviation.py" />
 
 ```python
 import numpy as np

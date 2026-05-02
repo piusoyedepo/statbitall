@@ -9,6 +9,7 @@ draft: false
 
 import anovaChart from '../../assets/images/b2-anova.png';
 import { Image } from 'astro:assets';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -75,6 +76,8 @@ Under the null hypothesis (all group means are equal), the F-statistic follows a
 ## The code
 
 <Image src={anovaChart} alt="Three panels showing group distributions, within vs between variance, and F-distribution with test result" />
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/b2-anova.py" />
 
 ```python
 import numpy as np

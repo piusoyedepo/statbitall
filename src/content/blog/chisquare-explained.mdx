@@ -9,6 +9,7 @@ draft: false
 
 import chiChart from '../../assets/images/b3-chisquare.png';
 import { Image } from 'astro:assets';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -67,6 +68,8 @@ The p-value is the probability of observing a chi-square statistic at least as l
 ## The code
 
 <Image src={chiChart} alt="Three panels showing observed vs expected traffic counts, a contingency table heatmap, and chi-square distributions by degrees of freedom" />
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/b3-chisquare.py" />
 
 ```python
 import numpy as np

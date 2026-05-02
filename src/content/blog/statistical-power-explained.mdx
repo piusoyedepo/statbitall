@@ -9,6 +9,7 @@ draft: false
 
 import powerChart from '../../assets/images/b4-power.png';
 import { Image } from 'astro:assets';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -75,6 +76,8 @@ Cohen's conventions: small effect d = 0.2, medium effect d = 0.5, large effect d
 ## The code
 
 <Image src={powerChart} alt="Three panels showing power curves by effect size, the alpha-power tradeoff, and null vs alternative distributions with Type I, Type II, and power regions" />
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/b4-statistical-power.py" />
 
 ```python
 import numpy as np

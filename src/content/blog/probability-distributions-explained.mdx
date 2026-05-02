@@ -8,6 +8,7 @@ draft: false
 ---
 import { Image } from 'astro:assets';
 import chartImage from '../../assets/images/a2-distributions.png';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -72,6 +73,8 @@ The mean is $1/\lambda$. If events arrive at rate $\lambda$ per unit time, the a
 <Image src={chartImage} alt="Four panels showing normal, binomial, Poisson, and exponential distributions" />
 
 Here's how to generate data from each distribution, visualize the shapes, and test whether real data matches an assumed distribution:
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/a2-probability-distributions.py" />
 
 ```python
 import numpy as np

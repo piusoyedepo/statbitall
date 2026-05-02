@@ -8,6 +8,7 @@ draft: false
 ---
 import { Image } from 'astro:assets';
 import chartImage from '../../assets/images/b1-ttest.png';
+import ColabButton from '../../components/ColabButton.astro';
 
 ## The underlying idea
 
@@ -72,6 +73,8 @@ Once you have the t-statistic, you compare it against the t-distribution with th
 <Image src={chartImage} alt="Violin plot comparing control and treatment groups with different variances" />
 
 Here's a direct comparison showing both versions and why Welch's is the safer default:
+
+<ColabButton href="https://colab.research.google.com/github/piusoyedepo/statbitall/blob/main/notebooks/b1-ttest.py" />
 
 ```python
 import numpy as np
