@@ -1,0 +1,15 @@
+---
+interface Props {
+  href: string;
+}
+const { href } = Astro.props;
+---
+
+<div style="margin-bottom: 0.75rem;">
+  <a href={href} target="_blank" rel="noopener noreferrer">
+    <img
+      src="https://colab.research.google.com/assets/colab-badge.svg"
+      alt="Open In Colab"
+    />
+  </a>
+</div>
