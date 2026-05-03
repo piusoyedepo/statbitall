@@ -3,6 +3,8 @@ import Base from './Base.astro';
 import Nav from '../components/Nav.astro';
 import ModuleBadge from '../components/ModuleBadge.astro';
 import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import headshot from '../assets/images/pius-headshot.jpeg';
 
 interface Props {
   title: string;
@@ -54,7 +56,13 @@ const formattedDate = date.toLocaleDateString('en-US', {
 
       <!-- Author card -->
       <div class="author-card">
-        <div class="author-avatar">PO</div>
+        <Image
+          src={headshot}
+          alt="Pius Oyedepo"
+          width={44}
+          height={44}
+          class="author-avatar"
+        />
         <div class="author-info">
           <p class="author-name">Pius Oyedepo</p>
           <p class="author-bio">Statistician and data analyst. Writing about the math behind the models.</p>
@@ -300,14 +308,8 @@ const formattedDate = date.toLocaleDateString('en-US', {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background-color: #1B9E77;
-    color: #ffffff;
-    font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: cover;
+    display: block;
   }
 
   .author-info {
