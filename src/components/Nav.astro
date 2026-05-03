@@ -120,14 +120,17 @@ const searchData = allPosts.map((p) => ({
         <circle cx="11" cy="11" r="8"/>
         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input
-        id="search-input"
-        type="text"
-        class="search-field"
-        placeholder="Search posts..."
-        autocomplete="off"
-        aria-label="Search posts"
-      />
+      <div class="search-input-wrap">
+        <input
+          id="search-input"
+          type="text"
+          class="search-field"
+          placeholder="Search posts..."
+          autocomplete="off"
+          aria-label="Search posts"
+        />
+        <span class="search-kbd" aria-hidden="true">⌘K</span>
+      </div>
       <button id="search-close" class="search-close" aria-label="Close search">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <line x1="18" y1="6" x2="6" y2="18"/>
@@ -330,8 +333,13 @@ const searchData = allPosts.map((p) => ({
     flex-shrink: 0;
   }
 
-  .search-field {
+  .search-input-wrap {
     flex: 1;
+    position: relative;
+  }
+
+  .search-field {
+    width: 100%;
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 6px;
@@ -341,10 +349,29 @@ const searchData = allPosts.map((p) => ({
     padding: 7px 12px;
     outline: none;
     transition: border-color 0.15s ease;
+    box-sizing: border-box;
   }
 
   .search-field::placeholder { color: rgba(255,255,255,0.4); }
   .search-field:focus { border-color: #1B9E77; }
+
+  .search-kbd {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (min-width: 640px) {
+    .search-kbd { display: block; }
+    .search-field { padding-right: 42px; }
+  }
 
   .search-close {
     background: transparent;
