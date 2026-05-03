@@ -80,6 +80,17 @@ import headshot from '../assets/images/pius-headshot.jpeg';
           <p>
             If you want to connect, find me on <a href="https://www.linkedin.com/in/pius-oyedepo-30371283/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
           </p>
+
+          <div class="newsletter-cta">
+            <p class="newsletter-heading">Get one deep dive per week</p>
+            <p class="newsletter-sub">New posts on statistics, ML, and AI. No noise.</p>
+            <a
+              href="https://buttondown.com/statbitall"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="newsletter-btn"
+            >Subscribe</a>
+          </div>
         </div>
       </div>
     </div>
@@ -198,5 +209,46 @@ import headshot from '../assets/images/pius-headshot.jpeg';
     border-radius: 50%;
     object-fit: cover;
     display: block;
+  }
+
+  .newsletter-cta {
+    background-color: #0B1D3A;
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .newsletter-heading {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #ffffff;
+    margin: 0 0 0.5rem !important;
+  }
+
+  .newsletter-sub {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 0 1.25rem !important;
+  }
+
+  .newsletter-btn {
+    display: inline-block;
+    background-color: #1B9E77;
+    color: #ffffff;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 10px 28px;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+  }
+
+  .newsletter-btn:hover {
+    background-color: #0F6E56;
+    color: #ffffff;
   }
 </style>
