@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import 'katex/dist/katex.min.css';
+import { Analytics } from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -80,5 +81,6 @@ const ogImageURL = new URL(ogImage, Astro.site ?? 'https://statbitall.com');
       }
       (window as any).toggleDark = toggleDark;
     </script>
+    <Analytics />
   </body>
 </html>
